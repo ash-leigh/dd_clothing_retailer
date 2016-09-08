@@ -6,7 +6,7 @@ app.get('/', function (req, res) {
   res.sendFile(path.join(__dirname + '/client/build/index.html'));
 });
 
-app.get('/stock', function(req, res){
+app.get('/api/stock', function(req, res){
   res.sendFile(path.join(__dirname + '/client/src/db/sampleProducts.json'));
 });
 

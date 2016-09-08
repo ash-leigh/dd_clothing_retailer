@@ -51,7 +51,7 @@
 	var ShopBox = __webpack_require__(172);
 	
 	window.onload = function () {
-	  ReactDOM.render(React.createElement(ShopBox, null), document.getElementById('app'));
+	  ReactDOM.render(React.createElement(ShopBox, { url: '/api/stock' }), document.getElementById('app'));
 	};
 
 /***/ },
@@ -21444,6 +21444,22 @@
 	
 	  getInitialState: function getInitialState() {
 	    return { data: [] };
+	  },
+	
+	  loadStockFromServer: function loadStockFromServer() {
+	    var request = new XMLHttpRequest();
+	    request.open('GET', this.props.url);
+	    request.onload = function () {
+	      if (request.status === 200) {
+	        var stock = JSON.parse(request.responseText);
+	        this.setState({ data: stock });
+	      }
+	    }.bind(this);
+	    request.send(null);
+	  },
+	
+	  componentDidMount: function componentDidMount() {
+	    this.loadStockFromServer();
 	  },
 	
 	  render: function render() {

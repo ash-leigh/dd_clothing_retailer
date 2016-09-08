@@ -11,6 +11,22 @@ var ShopBox = React.createClass({
     return {data: []};
   },
 
+  loadStockFromServer: function(){
+    var request = new XMLHttpRequest();
+    request.open('GET', this.props.url);
+    request.onload = function(){
+      if(request.status === 200){
+        var stock = JSON.parse(request.responseText)
+        this.setState({data: stock})
+      }
+    }.bind(this)
+    request.send(null);
+  },
+
+  componentDidMount: function(){
+    this.loadStockFromServer();
+  },
+
   render: function(){
     return(
       <div className='row col-12'>

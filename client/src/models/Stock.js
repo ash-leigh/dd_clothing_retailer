@@ -1,4 +1,5 @@
 var StockItem = require('./StockItem');
+var _ = require('lodash');
 
 var Stock = function(items){
   this.items = items;
@@ -6,11 +7,15 @@ var Stock = function(items){
 
 Stock.prototype = {
 
-  sellItem: function(){
+  checkIfItemIsInStock: function(item){
+    return item.stockQuantity > 0;
+  },
+
+  sellItem: function(item){
 
   },
 
-  returnItem: function(){
+  returnItem: function(item){
     
   }
 

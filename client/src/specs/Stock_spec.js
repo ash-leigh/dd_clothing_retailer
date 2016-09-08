@@ -12,5 +12,9 @@ describe('Stock', function(){
     assert.equal(stock.items.length, 13)
   })
 
+  it('can check whether an item is in stock', function(){
+    
+  })
+
 
 })

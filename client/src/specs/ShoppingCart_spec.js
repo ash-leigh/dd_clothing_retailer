@@ -9,7 +9,7 @@ describe('Shopping cart', function(){
     shoppingCart = new ShoppingCart();
     stockItem = new StockItem({description: 'Almond Toe Court Shoes', colour: 'Patent Black', department: 'Womens', category: 'Footwear', retailPrice: 99.00, salePrice: null, stockQuantity: 5});
     saleItem = new StockItem({description: 'Fine Stripe Short Sleeve Shirt', color: 'Green', department: 'Mens', category: 'Casualwear', retailPrice: 49.99, salePrice: 39.99, stockQuantity: 3});
-    fifteenOffVoucher = new Voucher({code: '15_OFF', discount: 15.00, eligibilityCriteria: [{category: 'Footwear'}], threshold: {total: 75.00}});
+    fifteenOffVoucher = new Voucher({code: '15_OFF', discount: 15.00, eligibilityCriteria: [{category: 'Footwear'}], threshold: 75.00});
   })
 
   it('has no items to start', function(){
@@ -46,17 +46,54 @@ describe('Shopping cart', function(){
     assert.equal(shoppingCart.total, 0)
   })
 
-  it('can apply voucher', function(){
+  it('can check whether items are eligible for voucher', function(){
     shoppingCart.addItem(stockItem);
     shoppingCart.addItem(saleItem);
-    assert.equal(shoppingCart.applyVoucher(fifteenOffVoucher), true);
+    assert.equal(shoppingCart.checkItemsEligibleForVoucher(fifteenOffVoucher), true);
+  })
+
+  it('can check for multiply eligibility criteria on a basket', function(){
+    assert.equal(true, false)
+  })
+
+  it('can check whether items are not eligible for voucher', function(){
+    shoppingCart.addItem(saleItem);
+    shoppingCart.addItem(saleItem);
+    assert.equal(shoppingCart.checkItemsEligibleForVoucher(fifteenOffVoucher), false);
+  })
+
+  it('can check whether total is eligible for voucher', function(){
+    shoppingCart.addItem(stockItem);
+    assert.equal(shoppingCart.checkTotalEligibleForVoucher(fifteenOffVoucher), true);
+  })
+
+  it('can check whether total is not eligible for voucher', function(){
+    shoppingCart.addItem(saleItem);
+    assert.equal(shoppingCart.checkTotalEligibleForVoucher(fifteenOffVoucher), false);
+  })
+
+  it('can apply voucher', function(){
+    shoppingCart.addItem(stockItem);
+    shoppingCart.applyVoucher(fifteenOffVoucher);
+    assert.equal(shoppingCart.total, 84.00);
+  })
+
+  it('can return true if voucher was applied', function(){
+    shoppingCart.addItem(stockItem);
+    assert.equal( shoppingCart.applyVoucher(fifteenOffVoucher), true);
   })
 
   it('can refuse to apply voucher', function(){
     shoppingCart.addItem(saleItem);
-    shoppingCart.addItem(saleItem);
-    assert.equal(shoppingCart.applyVoucher(fifteenOffVoucher), false);
+    shoppingCart.applyVoucher(fifteenOffVoucher);
+    assert.equal(shoppingCart.total, 39.99);
   })
+
+  it('can return false if voucher was not applied', function(){
+    shoppingCart.addItem(saleItem);
+    assert.equal( shoppingCart.applyVoucher(fifteenOffVoucher), false);
+  })
+
 
 
 })

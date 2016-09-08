@@ -30,21 +30,27 @@ ShoppingCart.prototype = {
     }
   },
 
-  checkVoucherEligibili
-
-  applyVoucher: function(voucher){
+  checkItemsEligibleForVoucher: function(voucher){
     var matchedItems = [];
 
     _.forEach(voucher.eligibilityCriteria, function(criteria){
       matchedItems = _.filter(this.items, _.matches(criteria));
     }.bind(this))
-
     matchedItems = _.uniq(matchedItems)
 
-    console.log(matchedItems.length)
-    console.log(voucher.eligibilityCriteria.length)
-
     return matchedItems.length === voucher.eligibilityCriteria.length
+  } ,
+
+  checkTotalEligibleForVoucher: function(voucher){
+    return this.total >= voucher.threshold;
+  } ,
+
+  applyVoucher: function(voucher){
+    if(this.checkItemsEligibleForVoucher(voucher) && this.checkTotalEligibleForVoucher(voucher)){
+      this.total -= voucher.discount
+      return true;
+    }
+    return false;
   }
 
 };

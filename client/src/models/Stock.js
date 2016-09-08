@@ -7,16 +7,42 @@ var Stock = function(items){
 
 Stock.prototype = {
 
+  allStockCount: function(){
+    var count = 0;
+    _.forEach(this.items, function(item){
+      count += item.stockQuantity;
+    })
+    return count;
+  },
+
+  itemStockCount: function(checkItem){
+    var count = 0;
+    _.forEach(this.items, function(item){
+      if(item.id === checkItem.id){
+        count += item.stockQuantity;
+      }
+    })
+    return count;
+  },
+
   checkIfItemIsInStock: function(item){
     return item.stockQuantity > 0;
   },
 
-  sellItem: function(item){
-
+  sellItem: function(soldItem){
+    _.forEach(this.items, function(item){
+      if(item.id === soldItem.id){
+        item.stockQuantity -= 1;
+      }
+    })
   },
 
-  returnItem: function(item){
-    
+  returnItem: function(returnedItem){
+    _.forEach(this.items, function(item){
+      if(item.id === returnedItem.id){
+        item.stockQuantity += 1;
+      }
+    })
   }
 
 //   getItems: function(){

@@ -1,5 +1,6 @@
 [
-  { "description": "Almond Toe Court Shoes",
+  { "id": 0,
+    "description": "Almond Toe Court Shoes",
     "colour": "Patent Black",
     "department": "Womens",
     "category": "Footwear",
@@ -7,7 +8,8 @@
     "salePrice": null,
     "stockQuantity": 5
   },
-  { "description": "Suede Shoes",
+  { "id": 1,
+    "description": "Suede Shoes",
     "colour": "Blue",
     "department": "Womens",
     "category": "Footwear",
@@ -15,7 +17,8 @@
     "salePrice": null,
     "stockQuantity": 4
   },
-  { "description": "Leather Driver Saddle Loafers",
+  { "id": 2,
+    "description": "Leather Driver Saddle Loafers",
     "colour": "Tan",
     "department": "Mens",
     "category": "Footwear",
@@ -23,7 +26,8 @@
     "salePrice": null,
     "stockQuantity": 12
   },
-  { "description": "Flip Flops",
+  { "id": 3,
+    "description": "Flip Flops",
     "colour": "Red",
     "department": "Mens",
     "category": "Footwear",
@@ -31,7 +35,8 @@
     "salePrice": null,
     "stockQuantity": 6
   },
-  { "description": "Flip Flops",
+  { "id": 4,
+    "description": "Flip Flops",
     "colour": "Blue",
     "department": "Mens",
     "category": "Footwear",
@@ -39,7 +44,8 @@
     "salePrice": null,
     "stockQuantity": 0
   },
-  { "description": "Gold Button Cardigan",
+  { "id": 5,
+    "description": "Gold Button Cardigan",
     "colour": "Black",
     "department": "Womens",
     "category": "Casualwear",
@@ -47,7 +53,8 @@
     "salePrice": null,
     "stockQuantity": 6
   },
-  { "description": "Cotton Shorts",
+  { "id": 6,
+    "description": "Cotton Shorts",
     "colour": "Medium Red",
     "department": "Womens",
     "category": "Casualwear",
@@ -55,7 +62,8 @@
     "salePrice": null,
     "stockQuantity": 5
   },
-  { "description": "Fine Stripe Short Sleeve Shirt",
+  { "id": 7,
+    "description": "Fine Stripe Short Sleeve Shirt",
     "colour": "Grey",
     "department": "Mens",
     "category": "Casualwear",
@@ -63,7 +71,8 @@
     "salePrice": null,
     "stockQuantity": 9
   },
-  { "description": "Fine Stripe Short Sleeve Shirt",
+  { "id": 8,
+    "description": "Fine Stripe Short Sleeve Shirt",
     "colour": "Green",
     "department": "Mens",
     "category": "Casualwear",
@@ -71,7 +80,8 @@
     "salePrice": 39.99,
     "stockQuantity": 3
   },
-  { "description": "Sharkskin Waistcoat",
+  { "id": 9,
+    "description": "Sharkskin Waistcoat",
     "colour": "Charcoal",
     "department": "Mens",
     "category": "Formalwear",
@@ -79,7 +89,8 @@
     "salePrice": null,
     "stockQuantity": 2
   },
-  { "description": "Lightweight Patch Pocket Blazer",
+  { "id": 10,
+    "description": "Lightweight Patch Pocket Blazer",
     "colour": "Deer",
     "department": "Mens",
     "category": "Formalwear",
@@ -87,7 +98,8 @@
     "salePrice": null,
     "stockQuantity": 1
   },
-  { "description": "Bird Print Dress",
+  { "id": 11,
+    "description": "Bird Print Dress",
     "colour": "Black",
     "department": "Mens",
     "category": "Formalwear",
@@ -95,7 +107,8 @@
     "salePrice": null,
     "stockQuantity": 10
   },
-  { "description": "Mid Twist Cut-Out Dress",
+  { "id": 12,
+    "description": "Mid Twist Cut-Out Dress",
     "colour": "Pink",
     "department": "Womens",
     "category": "Formalwear",

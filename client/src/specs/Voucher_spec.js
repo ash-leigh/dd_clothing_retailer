@@ -4,9 +4,24 @@ var Voucher = require('../models/Voucher');
 describe('Voucher', function(){
 
   beforeEach(function(){
-    fiveOffVoucher = new Voucher({code: '5_OFF', discount: 5.00, eligibilityCriteria: [], threshold: 0});
-    tenOffVoucher = new Voucher({code: '10_OFF', discount: 10.00, eligibilityCriteria: [], threshold: 50.00});
-    fifteenOffVoucher = new Voucher({code: '15_OFF', discount: 15.00, eligibilityCriteria: [{category: 'Footwear'}], threshold: 75.00});
+    fiveOffVoucher = new Voucher({
+      code: '5_OFF', 
+      discount: 5.00, 
+      eligibilityCriteria: [], 
+      threshold: 0
+    });
+    tenOffVoucher = new Voucher({
+      code: '10_OFF', 
+      discount: 10.00, 
+      eligibilityCriteria: [], 
+      threshold: 50.00
+    });
+    fifteenOffVoucher = new Voucher({
+      code: '15_OFF', 
+      discount: 15.00, 
+      eligibilityCriteria: [{category: 'Footwear'}], 
+      threshold: 75.00
+    });
   })
 
   it('has a code', function(){

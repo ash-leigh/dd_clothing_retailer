@@ -7,9 +7,27 @@ describe('Shopping cart', function(){
 
   beforeEach(function(){
     shoppingCart = new ShoppingCart();
-    stockItem = new StockItem({description: 'Almond Toe Court Shoes', colour: 'Patent Black', department: 'Womens', category: 'Footwear', retailPrice: 99.00, salePrice: null, stockQuantity: 5});
-    saleItem = new StockItem({description: 'Fine Stripe Short Sleeve Shirt', color: 'Green', department: 'Mens', category: 'Casualwear', retailPrice: 49.99, salePrice: 39.99, stockQuantity: 3});
-    fifteenOffVoucher = new Voucher({code: '15_OFF', discount: 15.00, eligibilityCriteria: [{category: 'Footwear'}], threshold: 75.00});
+    stockItem = new StockItem({
+      description: 'Almond Toe Court Shoes', 
+      colour: 'Patent Black', 
+      department: 'Womens', 
+      category: 'Footwear', 
+      retailPrice: 99.00, 
+      salePrice: null, 
+      stockQuantity: 5});
+    saleItem = new StockItem({
+      description: 'Fine Stripe Short Sleeve Shirt', 
+      color: 'Green', 
+      department: 'Mens', 
+      category: 'Casualwear', 
+      retailPrice: 49.99, 
+      salePrice: 39.99, 
+      stockQuantity: 3});
+    fifteenOffVoucher = new Voucher({
+      code: '15_OFF', 
+      discount: 15.00, 
+      eligibilityCriteria: [{category: 'Footwear'}], 
+      threshold: 75.00});
   })
 
   it('has no items to start', function(){

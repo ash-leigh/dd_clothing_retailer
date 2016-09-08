@@ -1,4 +1,5 @@
 var StockItem = function(params){
+  this.id = params.id;
   this.description = params.description;
   this.colour = params.colour;
   this.department = params.department;

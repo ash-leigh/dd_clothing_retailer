@@ -4,8 +4,26 @@ var StockItem = require('../models/StockItem');
 describe('Stock Item', function(){
 
   beforeEach(function(){
-    stockItem = new StockItem({description: 'Almond Toe Court Shoes', colour: 'Patent Black', department: 'Womens', category: 'Footwear', retailPrice: 99.00, salePrice: null, stockQuantity: 5})
-    saleItem = new StockItem({description: 'Fine Stripe Short Sleeve Shirt', color: 'Green', department: 'Mens', category: 'Casualwear', retailPrice: 49.99, salePrice: 39.99, stockQuantity: 3})
+    stockItem = new StockItem({
+      id: 0,
+      description: 'Almond Toe Court Shoes', 
+      colour: 'Patent Black', 
+      department: 'Womens', 
+      category: 'Footwear', 
+      retailPrice: 99.00, 
+      salePrice: null, 
+      stockQuantity: 5
+    })
+    saleItem = new StockItem({
+      id: 8,
+      description: 'Fine Stripe Short Sleeve Shirt', 
+      color: 'Green', 
+      department: 'Mens', 
+      category: 'Casualwear', 
+      retailPrice: 49.99, 
+      salePrice: 39.99, 
+      stockQuantity: 3
+    })
   })
 
   it('has a description', function(){

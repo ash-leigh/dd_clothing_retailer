@@ -5,10 +5,21 @@ var ShoppingBasketExpandButton = require('./ShoppingBasketExpandButton');
 var ShoppingBasketDetails = require('./ShoppingBasketDetails');
 var StockItemsList = require('./StockItemsList');
 
+var ShoppingCart = require('../models/ShoppingCart')
+
 var ShopBox = React.createClass({
 
   getInitialState: function() {
-    return {data: []};
+    var shoppingCart = new ShoppingCart;
+    return {stockData: [], shoppingCart: shoppingCart};
+  },
+
+  getNumberOfItemsInBasket: function(){
+
+  },
+
+  getBasketTotal: function(){
+
   },
 
   loadStockFromServer: function(){
@@ -33,10 +44,10 @@ var ShopBox = React.createClass({
         <div className='col-1'></div>
         <div className='col-10'>
           <ShopHeader />
-          <ShoppingBasketHeader />
+          <ShoppingBasketHeader numberOfItemsInBasket= {this.getNumberOfItemsInBasket} basketTotal={getBasketTotal}/>
           <ShoppingBasketExpandButton />
           <ShoppingBasketDetails />
-          <StockItemsList />
+          <StockItemsList stock={this.state.stockData}/>
         </div>
         <div className='col-1'></div>
       </div>

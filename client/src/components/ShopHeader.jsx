@@ -3,7 +3,7 @@ var React = require('react');
 var ShopHeader = function(){
   return(
     <div className= 'row'>
-      ShopHeader
+      <img src='../../build/images/dd_retail_logo.png' />
     </div>
   )
 }

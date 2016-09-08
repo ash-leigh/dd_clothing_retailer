@@ -1,5 +1,6 @@
 var ShoppingCart = require('./ShoppingCart');
 var StockItem = require('./StockItem');
+var _ = require('lodash');
 
 var ShoppingCart = function(){
   this.items = [],
@@ -29,15 +30,21 @@ ShoppingCart.prototype = {
     }
   },
 
+  checkVoucherEligibili
+
   applyVoucher: function(voucher){
-    for(var restriction in voucher.restrictions){
-      for(var item in this.items){
-      //   var stockItem = new StockItem({description: item.description, color: item.colour, department: item.department, category: item.category, retailPrice: item.retailPrice, salePrice: item.salePrice, stockQuantity: item.stockQuantity})
-        if(Object.hasOwnProperty(restriction) === Object.hasOwnProperty(item)){
-          return true;
-        }
-      }
-    }
+    var matchedItems = [];
+
+    _.forEach(voucher.eligibilityCriteria, function(criteria){
+      matchedItems = _.filter(this.items, _.matches(criteria));
+    }.bind(this))
+
+    matchedItems = _.uniq(matchedItems)
+
+    console.log(matchedItems.length)
+    console.log(voucher.eligibilityCriteria.length)
+
+    return matchedItems.length === voucher.eligibilityCriteria.length
   }
 
 };

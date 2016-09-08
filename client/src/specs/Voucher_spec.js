@@ -4,9 +4,9 @@ var Voucher = require('../models/Voucher');
 describe('Voucher', function(){
 
   beforeEach(function(){
-    fiveOffVoucher = new Voucher({code: '5_OFF', discount: 5.00, itemRestrictions: [], totalRestriction: 0});
-    tenOffVoucher = new Voucher({code: '10_OFF', discount: 10.00, itemRestrictions: [], totalRestriction: 50.00});
-    fifteenOffVoucher = new Voucher({code: '15_OFF', discount: 15.00, itemRestrictions: [{category: 'Footwear'}], totalRestriction: 75.00});
+    fiveOffVoucher = new Voucher({code: '5_OFF', discount: 5.00, eligibilityCriteria: [], threshold: 0});
+    tenOffVoucher = new Voucher({code: '10_OFF', discount: 10.00, eligibilityCriteria: [], threshold: 50.00});
+    fifteenOffVoucher = new Voucher({code: '15_OFF', discount: 15.00, eligibilityCriteria: [{category: 'Footwear'}], threshold: 75.00});
   })
 
   it('has a code', function(){
@@ -18,11 +18,11 @@ describe('Voucher', function(){
   })
 
   it('has item restrictions', function(){
-    assert.equal(fifteenOffVoucher.itemRestrictions.length, 1);
+    assert.equal(fifteenOffVoucher.eligibilityCriteria.length, 1);
   })
 
   it('has total restriction', function(){
-    assert.equal(fifteenOffVoucher.totalRestriction, 75.00);
+    assert.equal(fifteenOffVoucher.threshold, 75.00);
   })
 
 

@@ -1,8 +1,8 @@
 var Voucher = function(params){
   this.code = params.code;
   this.discount = params.discount;
-  this.itemRestrictions = params.itemRestrictions;
-  this.totalRestriction = params.totalRestriction;
+  this.eligibilityCriteria = params.eligibilityCriteria;
+  this.threshold = params.threshold;
 };
 
 module.exports = Voucher;

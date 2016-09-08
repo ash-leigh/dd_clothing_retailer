@@ -4,6 +4,7 @@
     "department": "Womens",
     "category": "Footwear",
     "retailPrice": 99.00,
+    "salePrice": null,
     "stockQuantity": 5
   },
   { "description": "Suede Shoes",
@@ -11,6 +12,7 @@
     "department": "Womens",
     "category": "Footwear",
     "retailPrice": 42.00,
+    "salePrice": null,
     "stockQuantity": 4
   },
   { "description": "Leather Driver Saddle Loafers",
@@ -18,6 +20,7 @@
     "department": "Mens",
     "category": "Footwear",
     "retailPrice": 34.00,
+    "salePrice": null,
     "stockQuantity": 12
   },
   { "description": "Flip Flops",
@@ -25,6 +28,7 @@
     "department": "Mens",
     "category": "Footwear",
     "retailPrice": 19.00,
+    "salePrice": null,
     "stockQuantity": 6
   },
   { "description": "Flip Flops",
@@ -32,6 +36,7 @@
     "department": "Mens",
     "category": "Footwear",
     "retailPrice": 19.00,
+    "salePrice": null,
     "stockQuantity": 0
   },
   { "description": "Gold Button Cardigan",
@@ -39,6 +44,7 @@
     "department": "Womens",
     "category": "Casualwear",
     "retailPrice": 167.00,
+    "salePrice": null,
     "stockQuantity": 6
   },
   { "description": "Cotton Shorts",
@@ -46,6 +52,7 @@
     "department": "Womens",
     "category": "Casualwear",
     "retailPrice": 30.00,
+    "salePrice": null,
     "stockQuantity": 5
   },
   { "description": "Fine Stripe Short Sleeve Shirt",
@@ -53,6 +60,7 @@
     "department": "Mens",
     "category": "Casualwear",
     "retailPrice": 49.99,
+    "salePrice": null,
     "stockQuantity": 9
   },
   { "description": "Fine Stripe Short Sleeve Shirt",
@@ -68,6 +76,7 @@
     "department": "Mens",
     "category": "Formalwear",
     "retailPrice": 75.00,
+    "salePrice": null,
     "stockQuantity": 2
   },
   { "description": "Lightweight Patch Pocket Blazer",
@@ -75,6 +84,7 @@
     "department": "Mens",
     "category": "Formalwear",
     "retailPrice": 175.50,
+    "salePrice": null,
     "stockQuantity": 1
   },
   { "description": "Bird Print Dress",
@@ -82,6 +92,7 @@
     "department": "Mens",
     "category": "Formalwear",
     "retailPrice": 270.00,
+    "salePrice": null,
     "stockQuantity": 10
   },
   { "description": "Mid Twist Cut-Out Dress",
@@ -89,6 +100,7 @@
     "department": "Womens",
     "category": "Formalwear",
     "retailPrice": 540.00,
+    "salePrice": null,
     "stockQuantity": 5
   }
 

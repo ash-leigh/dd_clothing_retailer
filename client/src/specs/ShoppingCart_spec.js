@@ -9,7 +9,7 @@ describe('Shopping cart', function(){
     shoppingCart = new ShoppingCart();
     stockItem = new StockItem({description: 'Almond Toe Court Shoes', colour: 'Patent Black', department: 'Womens', category: 'Footwear', retailPrice: 99.00, salePrice: null, stockQuantity: 5});
     saleItem = new StockItem({description: 'Fine Stripe Short Sleeve Shirt', color: 'Green', department: 'Mens', category: 'Casualwear', retailPrice: 49.99, salePrice: 39.99, stockQuantity: 3});
-    fifteenOffVoucher = new Voucher({code: '15_OFF', discount: 15.00, itemRestrictions: [{category: 'Footwear'}, {total: 75.00}]});
+    fifteenOffVoucher = new Voucher({code: '15_OFF', discount: 15.00, eligibilityCriteria: [{category: 'Footwear'}], threshold: {total: 75.00}});
   })
 
   it('has no items to start', function(){
@@ -47,10 +47,15 @@ describe('Shopping cart', function(){
   })
 
   it('can apply voucher', function(){
+    shoppingCart.addItem(stockItem);
+    shoppingCart.addItem(saleItem);
+    assert.equal(shoppingCart.applyVoucher(fifteenOffVoucher), true);
+  })
+
+  it('can refuse to apply voucher', function(){
     shoppingCart.addItem(saleItem);
     shoppingCart.addItem(saleItem);
-    var check = shoppingCart.applyVoucher(fifteenOffVoucher);
-    assert.equal(check, true);
+    assert.equal(shoppingCart.applyVoucher(fifteenOffVoucher), false);
   })
 
 

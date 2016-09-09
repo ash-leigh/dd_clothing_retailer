@@ -10,7 +10,7 @@ var EditBasketItem= React.createClass({
       description: this.props.stockItem.description,
       colour: this.props.stockItem.colour,
       department: this.props.stockItem.department,
-      category: this.props.category,
+      category: this.props.stockItem.category,
       retailPrice: this.props.stockItem.retailPrice,
       salePrice: this.props.stockItem.salePrice,
       stockQuantity: this.props.stockItem.stockQuantity

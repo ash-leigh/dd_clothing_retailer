@@ -9,7 +9,7 @@ var StockItem = React.createClass({
       stockItem: {
       id: this.props.id,
       description: this.props.description,
-      colour: this.props.description,
+      colour: this.props.colour,
       department: this.props.department,
       category: this.props.category,
       retailPrice: this.props.retailPrice,

@@ -69,22 +69,14 @@ var ShopBox = React.createClass({
     this.loadVouchersFromServer();
   },
 
-  checkVoucherCode: function(code){
+  handleVoucherClick: function(code){
     var shoppingCart = new ShoppingCart();
-
     for(var item of this.state.shoppingCart){
       shoppingCart.addItem(new StockItem(item));
     }
-    console.log(shoppingCart)
-    for(var voucher of this.state.voucherData){
-      var checkVoucher = new Voucher(voucher)
-      if(checkVoucher.code === code){
-        shoppingCart.applyVoucher(checkVoucher);
-        console.log(shoppingCart.total)
-
-        this.setState({shoppingCart: shoppingCart.items, total: shoppingCart.total, numberOfItems: shoppingCart.items.length});
-      }
-    }
+   shoppingCart.checkVoucherCode(code, this.state.voucherData)
+   console.log(shoppingCart.total)
+   this.setState({shoppingCart: shoppingCart.items, total: shoppingCart.total, numberOfItems: shoppingCart.items.length});
 
   },
 
@@ -100,7 +92,7 @@ var ShopBox = React.createClass({
           <ShopHeader />
           <ShoppingBasketHeader total={this.state.total} items={this.state.numberOfItems}/>
           <ShoppingBasketExpandButton />
-          <ShoppingBasketDetails checkVoucherCode={this.checkVoucherCode}/>
+          <ShoppingBasketDetails handleVoucherClick={this.handleVoucherClick}/>
           <StockItemsList addItemToBasket={this.addItemToBasket} removeItemFromBasket={this.removeItemFromBasket} stock={this.state.stockData} getNumberOfItemInBasket={this.getNumberOfItemInBasket}/>
         </div>
         <div className='col-1'></div>

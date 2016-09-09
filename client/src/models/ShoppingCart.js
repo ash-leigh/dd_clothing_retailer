@@ -1,5 +1,6 @@
 var ShoppingCart = require('./ShoppingCart');
 var StockItem = require('./StockItem');
+var Voucher = require('./Voucher');
 var _ = require('lodash');
 
 var ShoppingCart = function(){
@@ -45,28 +46,34 @@ ShoppingCart.prototype = {
     return count;
   },
 
-  checkVoucherCode: function(code){
-
+  checkVoucherCode: function(code, vouchers){
+    _.forEach(vouchers, function(voucher){
+      if(voucher.code === code){
+        console.log(voucher.code)
+        this.applyVoucher(voucher)
+      }
+    }.bind(this))
   },
 
   checkItemsEligibleForVoucher: function(voucher){
-    var matchedItems = [];
-
-    _.forEach(voucher.eligibilityCriteria, function(criteria){
-      matchedItems = _.filter(this.items, _.matches(criteria));
-    }.bind(this))
-    matchedItems = _.uniq(matchedItems)
-
-    return matchedItems.length === voucher.eligibilityCriteria.length
-  } ,
+      var matchedItems = [];
+      _.forEach(voucher.eligibilityCriteria, function(criteria){
+        console.log(criteria)
+        matchedItems = _.filter(this.items, _.matches(criteria));
+      }.bind(this))
+      matchedItems = _.uniq(matchedItems);
+      return matchedItems.length === voucher.eligibilityCriteria.length
+      console.log(matchedItems)
+  },
 
   checkTotalEligibleForVoucher: function(voucher){
     return this.total >= voucher.threshold;
-  } ,
+  },
 
   applyVoucher: function(voucher){
     if(this.checkItemsEligibleForVoucher(voucher) && this.checkTotalEligibleForVoucher(voucher)){
       this.total -= voucher.discount
+
       return true;
     }
     return false;

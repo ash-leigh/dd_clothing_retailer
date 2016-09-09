@@ -13,7 +13,7 @@ var VoucherForm = React.createClass({
 
   handleVoucherClick: function(){
     console.log('entered click')
-    this.props.checkVoucherCode(this.state.voucherCode);
+    this.props.handleVoucherClick(this.state.voucherCode);
   },
 
   render: function(){

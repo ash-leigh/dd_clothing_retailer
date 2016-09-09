@@ -21526,9 +21526,8 @@
 	    this.loadVouchersFromServer();
 	  },
 	
-	  checkVoucherCode: function checkVoucherCode(code) {
+	  handleVoucherClick: function handleVoucherClick(code) {
 	    var shoppingCart = new ShoppingCart();
-	
 	    var _iteratorNormalCompletion2 = true;
 	    var _didIteratorError2 = false;
 	    var _iteratorError2 = undefined;
@@ -21554,22 +21553,22 @@
 	      }
 	    }
 	
-	    console.log(shoppingCart);
+	    shoppingCart.checkVoucherCode(code, this.state.voucherData);
+	    console.log(shoppingCart.total);
+	    this.setState({ shoppingCart: shoppingCart.items, total: shoppingCart.total, numberOfItems: shoppingCart.items.length });
+	  },
+	
+	  render: function render() {
+	    var shoppingCart = new ShoppingCart();
 	    var _iteratorNormalCompletion3 = true;
 	    var _didIteratorError3 = false;
 	    var _iteratorError3 = undefined;
 	
 	    try {
-	      for (var _iterator3 = this.state.voucherData[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-	        var voucher = _step3.value;
+	      for (var _iterator3 = this.state.shoppingCart[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+	        var item = _step3.value;
 	
-	        var checkVoucher = new Voucher(voucher);
-	        if (checkVoucher.code === code) {
-	          shoppingCart.applyVoucher(checkVoucher);
-	          console.log(shoppingCart.total);
-	
-	          this.setState({ shoppingCart: shoppingCart.items, total: shoppingCart.total, numberOfItems: shoppingCart.items.length });
-	        }
+	        shoppingCart.addItem(item);
 	      }
 	    } catch (err) {
 	      _didIteratorError3 = true;
@@ -21585,34 +21584,6 @@
 	        }
 	      }
 	    }
-	  },
-	
-	  render: function render() {
-	    var shoppingCart = new ShoppingCart();
-	    var _iteratorNormalCompletion4 = true;
-	    var _didIteratorError4 = false;
-	    var _iteratorError4 = undefined;
-	
-	    try {
-	      for (var _iterator4 = this.state.shoppingCart[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
-	        var item = _step4.value;
-	
-	        shoppingCart.addItem(item);
-	      }
-	    } catch (err) {
-	      _didIteratorError4 = true;
-	      _iteratorError4 = err;
-	    } finally {
-	      try {
-	        if (!_iteratorNormalCompletion4 && _iterator4.return) {
-	          _iterator4.return();
-	        }
-	      } finally {
-	        if (_didIteratorError4) {
-	          throw _iteratorError4;
-	        }
-	      }
-	    }
 	
 	    return React.createElement(
 	      'div',
@@ -21624,7 +21595,7 @@
 	        React.createElement(ShopHeader, null),
 	        React.createElement(ShoppingBasketHeader, { total: this.state.total, items: this.state.numberOfItems }),
 	        React.createElement(ShoppingBasketExpandButton, null),
-	        React.createElement(ShoppingBasketDetails, { checkVoucherCode: this.checkVoucherCode }),
+	        React.createElement(ShoppingBasketDetails, { handleVoucherClick: this.handleVoucherClick }),
 	        React.createElement(StockItemsList, { addItemToBasket: this.addItemToBasket, removeItemFromBasket: this.removeItemFromBasket, stock: this.state.stockData, getNumberOfItemInBasket: this.getNumberOfItemInBasket })
 	      ),
 	      React.createElement('div', { className: 'col-1' })
@@ -21722,7 +21693,7 @@
 	    React.createElement(
 	      'div',
 	      { className: 'row' },
-	      React.createElement(VoucherForm, { checkVoucherCode: props.checkVoucherCode })
+	      React.createElement(VoucherForm, { handleVoucherClick: props.handleVoucherClick })
 	    )
 	  );
 	};
@@ -21794,7 +21765,7 @@
 	
 	  handleVoucherClick: function handleVoucherClick() {
 	    console.log('entered click');
-	    this.props.checkVoucherCode(this.state.voucherCode);
+	    this.props.handleVoucherClick(this.state.voucherCode);
 	  },
 	
 	  render: function render() {
@@ -21875,7 +21846,7 @@
 	      stockItem: {
 	        id: this.props.id,
 	        description: this.props.description,
-	        colour: this.props.description,
+	        colour: this.props.colour,
 	        department: this.props.department,
 	        category: this.props.category,
 	        retailPrice: this.props.retailPrice,
@@ -21940,6 +21911,7 @@
 	
 	var ShoppingCart = __webpack_require__(182);
 	var StockItem = __webpack_require__(183);
+	var Voucher = __webpack_require__(188);
 	var _ = __webpack_require__(184);
 	
 	var ShoppingCart = function ShoppingCart() {
@@ -21981,17 +21953,24 @@
 	    return count;
 	  },
 	
-	  checkVoucherCode: function checkVoucherCode(code) {},
+	  checkVoucherCode: function checkVoucherCode(code, vouchers) {
+	    _.forEach(vouchers, function (voucher) {
+	      if (voucher.code === code) {
+	        console.log(voucher.code);
+	        this.applyVoucher(voucher);
+	      }
+	    }.bind(this));
+	  },
 	
 	  checkItemsEligibleForVoucher: function checkItemsEligibleForVoucher(voucher) {
 	    var matchedItems = [];
-	
 	    _.forEach(voucher.eligibilityCriteria, function (criteria) {
+	      console.log(criteria);
 	      matchedItems = _.filter(this.items, _.matches(criteria));
 	    }.bind(this));
 	    matchedItems = _.uniq(matchedItems);
-	
 	    return matchedItems.length === voucher.eligibilityCriteria.length;
+	    console.log(matchedItems);
 	  },
 	
 	  checkTotalEligibleForVoucher: function checkTotalEligibleForVoucher(voucher) {
@@ -22001,6 +21980,7 @@
 	  applyVoucher: function applyVoucher(voucher) {
 	    if (this.checkItemsEligibleForVoucher(voucher) && this.checkTotalEligibleForVoucher(voucher)) {
 	      this.total -= voucher.discount;
+	
 	      return true;
 	    }
 	    return false;
@@ -38805,7 +38785,7 @@
 	      description: this.props.stockItem.description,
 	      colour: this.props.stockItem.colour,
 	      department: this.props.stockItem.department,
-	      category: this.props.category,
+	      category: this.props.stockItem.category,
 	      retailPrice: this.props.stockItem.retailPrice,
 	      salePrice: this.props.stockItem.salePrice,
 	      stockQuantity: this.props.stockItem.stockQuantity

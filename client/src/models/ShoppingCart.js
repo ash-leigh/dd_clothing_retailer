@@ -5,8 +5,7 @@ var _ = require('lodash');
 
 var ShoppingCart = function(){
   this.items = [],
-  this.total = 0,
-  this.availableVouchers = []
+  this.total = 0
 };
 
 ShoppingCart.prototype = {
@@ -49,10 +48,21 @@ ShoppingCart.prototype = {
   checkVoucherCode: function(code, vouchers){
     _.forEach(vouchers, function(voucher){
       if(voucher.code === code){
-        console.log(voucher.code)
-        this.applyVoucher(voucher)
+        return true;
       }
-    }.bind(this))
+    })
+  },
+
+  checkBasketEligibleForVoucher: function(voucher){
+    return (this.checkItemsEligibleForVoucher(voucher) && this.checkTotalEligibleForVoucher(voucher))
+  },
+
+  applyVoucher: function(code, vouchers){
+    _.forEach(vouchers, function(voucher){
+      if(voucher.code === code){
+        this.applyVoucherToTotal(voucher);
+      }
+    })
   },
 
   checkItemsEligibleForVoucher: function(voucher){
@@ -63,20 +73,16 @@ ShoppingCart.prototype = {
       }.bind(this))
       matchedItems = _.uniq(matchedItems);
       return matchedItems.length === voucher.eligibilityCriteria.length
-      console.log(matchedItems)
   },
 
   checkTotalEligibleForVoucher: function(voucher){
     return this.total >= voucher.threshold;
   },
 
-  applyVoucher: function(voucher){
+  applyVoucherToTotal: function(voucher){
     if(this.checkItemsEligibleForVoucher(voucher) && this.checkTotalEligibleForVoucher(voucher)){
       this.total -= voucher.discount
-
-      return true;
     }
-    return false;
   }
 
 };

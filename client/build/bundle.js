@@ -21447,7 +21447,7 @@
 	
 	
 	  getInitialState: function getInitialState() {
-	    return { stockData: [], shoppingCart: [], voucherData: [], total: 0, numberOfItems: 0 };
+	    return { stockData: [], shoppingCart: [], voucherData: [], total: 0, numberOfItems: 0, voucherError: '', basketError: '' };
 	  },
 	
 	  populateShoppingCart: function populateShoppingCart() {
@@ -21553,9 +21553,17 @@
 	      }
 	    }
 	
-	    shoppingCart.checkVoucherCode(code, this.state.voucherData);
-	    console.log(shoppingCart.total);
-	    this.setState({ shoppingCart: shoppingCart.items, total: shoppingCart.total, numberOfItems: shoppingCart.items.length });
+	    if (!shoppingCart.checkVoucherCode()) {
+	      this.setState({ voucherError: 'Sorry, this is not a valid voucher code' });
+	    }
+	
+	    this.setState({ voucherError: 'Sorry, this voucher is not valid for your basket' });
+	    // if(!shoppingCart.checkBasketEligibleForVoucher()){
+	    //   console.log('BASKET INVALID')
+	    // }
+	    // shoppingCart.applyVoucher(code, this.state.voucherData)
+	
+	    // this.setState({shoppingCart: shoppingCart.items, total: shoppingCart.total, numberOfItems: shoppingCart.items.length});
 	  },
 	
 	  render: function render() {
@@ -21595,7 +21603,7 @@
 	        React.createElement(ShopHeader, null),
 	        React.createElement(ShoppingBasketHeader, { total: this.state.total, items: this.state.numberOfItems }),
 	        React.createElement(ShoppingBasketExpandButton, null),
-	        React.createElement(ShoppingBasketDetails, { handleVoucherClick: this.handleVoucherClick }),
+	        React.createElement(ShoppingBasketDetails, { handleVoucherClick: this.handleVoucherClick, voucherError: this.state.voucherError, basketError: this.state.basketError }),
 	        React.createElement(StockItemsList, { addItemToBasket: this.addItemToBasket, removeItemFromBasket: this.removeItemFromBasket, stock: this.state.stockData, getNumberOfItemInBasket: this.getNumberOfItemInBasket })
 	      ),
 	      React.createElement('div', { className: 'col-1' })
@@ -21693,7 +21701,7 @@
 	    React.createElement(
 	      'div',
 	      { className: 'row' },
-	      React.createElement(VoucherForm, { handleVoucherClick: props.handleVoucherClick })
+	      React.createElement(VoucherForm, { handleVoucherClick: props.handleVoucherClick, voucherError: props.voucherError, basketError: props.basketError })
 	    )
 	  );
 	};
@@ -21749,6 +21757,8 @@
 	'use strict';
 	
 	var React = __webpack_require__(1);
+	var InvalidVoucherCodeError = __webpack_require__(193);
+	var InvalidBasketCodeError = __webpack_require__(194);
 	
 	var VoucherForm = React.createClass({
 	  displayName: 'VoucherForm',
@@ -21778,7 +21788,9 @@
 	        'button',
 	        { onClick: this.handleVoucherClick },
 	        'apply voucher'
-	      )
+	      ),
+	      React.createElement(InvalidVoucherCodeError, { voucherError: this.props.voucherError }),
+	      React.createElement(InvalidBasketCodeError, { basketError: this.props.basketError })
 	    );
 	  }
 	
@@ -21915,7 +21927,7 @@
 	var _ = __webpack_require__(184);
 	
 	var ShoppingCart = function ShoppingCart() {
-	  this.items = [], this.total = 0, this.availableVouchers = [];
+	  this.items = [], this.total = 0;
 	};
 	
 	ShoppingCart.prototype = {
@@ -21956,10 +21968,21 @@
 	  checkVoucherCode: function checkVoucherCode(code, vouchers) {
 	    _.forEach(vouchers, function (voucher) {
 	      if (voucher.code === code) {
-	        console.log(voucher.code);
-	        this.applyVoucher(voucher);
+	        return true;
 	      }
-	    }.bind(this));
+	    });
+	  },
+	
+	  checkBasketEligibleForVoucher: function checkBasketEligibleForVoucher(voucher) {
+	    return this.checkItemsEligibleForVoucher(voucher) && this.checkTotalEligibleForVoucher(voucher);
+	  },
+	
+	  applyVoucher: function applyVoucher(code, vouchers) {
+	    _.forEach(vouchers, function (voucher) {
+	      if (voucher.code === code) {
+	        this.applyVoucherToTotal(voucher);
+	      }
+	    });
 	  },
 	
 	  checkItemsEligibleForVoucher: function checkItemsEligibleForVoucher(voucher) {
@@ -21970,20 +21993,16 @@
 	    }.bind(this));
 	    matchedItems = _.uniq(matchedItems);
 	    return matchedItems.length === voucher.eligibilityCriteria.length;
-	    console.log(matchedItems);
 	  },
 	
 	  checkTotalEligibleForVoucher: function checkTotalEligibleForVoucher(voucher) {
 	    return this.total >= voucher.threshold;
 	  },
 	
-	  applyVoucher: function applyVoucher(voucher) {
+	  applyVoucherToTotal: function applyVoucherToTotal(voucher) {
 	    if (this.checkItemsEligibleForVoucher(voucher) && this.checkTotalEligibleForVoucher(voucher)) {
 	      this.total -= voucher.discount;
-	
-	      return true;
 	    }
-	    return false;
 	  }
 	
 	};
@@ -38842,6 +38861,46 @@
 	};
 	
 	module.exports = Voucher;
+
+/***/ },
+/* 189 */,
+/* 190 */,
+/* 191 */,
+/* 192 */,
+/* 193 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var React = __webpack_require__(1);
+	
+	var InvalidVoucherCodeError = function InvalidVoucherCodeError(props) {
+	  return React.createElement(
+	    'div',
+	    { className: 'voucher-error-code' },
+	    props.voucherError
+	  );
+	};
+	
+	module.exports = InvalidVoucherCodeError;
+
+/***/ },
+/* 194 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var React = __webpack_require__(1);
+	
+	var InvalidBasketCodeError = function InvalidBasketCodeError() {
+	  return React.createElement(
+	    'div',
+	    { className: 'basket-error-code' },
+	    'Sorry, this voucher is not valid for your basket'
+	  );
+	};
+	
+	module.exports = InvalidBasketCodeError;
 
 /***/ }
 /******/ ]);

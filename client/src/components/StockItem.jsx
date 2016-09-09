@@ -21,8 +21,7 @@ var StockItem = function(props){
          <div className='col-6'>
            <EditBasketButton 
            display='-'
-           // removeItem={props.removeItem}
-
+           removeItemFromBasket={props.removeItemFromBasket}
            id={props.id}
            description={props.description}
            colour={props.colour}
@@ -33,9 +32,8 @@ var StockItem = function(props){
            stockQuantity={props.stockQuantity}/>
            <ItemsInBasketCount />
            <EditBasketButton 
-            display='+' 
-           addItem={props.addItem}
-
+           display='+' 
+           addItemToBasket={props.addItemToBasket}
            id={props.id}
            description={props.description}
            colour={props.colour}

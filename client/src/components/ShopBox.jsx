@@ -5,7 +5,8 @@ var ShoppingBasketExpandButton = require('./ShoppingBasketExpandButton');
 var ShoppingBasketDetails = require('./ShoppingBasketDetails');
 var StockItemsList = require('./StockItemsList');
 
-var ShoppingCart = require('../models/ShoppingCart')
+var ShoppingCart = require('../models/ShoppingCart');
+var StockItem = require('../models/StockItem');
 
 var ShopBox = React.createClass({
 
@@ -16,24 +17,25 @@ var ShopBox = React.createClass({
   addItemToBasket: function(selectedItem){
     var shoppingCart = new ShoppingCart();
     for(var item of this.state.shoppingCart){
-      shoppingCart.addItem(new StockItem());
+      shoppingCart.addItem(new StockItem(item));
     }
     shoppingCart.addItem(selectedItem);
     this.setState({shoppingCart: shoppingCart.items})
   },
 
-  // removeItemFromBasket: function(removedItem){
-  //   var shoppingCart = new ShoppingCart();
-  //   for(var item of this.state.shoppingCart){
-  //     shoppingCart.addItem(new StockItem());
-  //   }
-  //   shoppingCart.removeItem(removedItem);
-  //   this.setState({shoppingCart: shoppingCart.items})
-  // },
+  removeItemFromBasket: function(removedItem){
+    var shoppingCart = new ShoppingCart();
+    for(var item of this.state.shoppingCart){
+      shoppingCart.addItem(new StockItem(item));
+    }
+    shoppingCart.removeItem(removedItem);
+    this.setState({shoppingCart: shoppingCart.items})
+  },
 
-  // getNumberOfItemsInBasket: function(){
-
-  // },
+  getNumberOfItemInBasket: function(item){
+    var shoppingCart = new ShoppingCart();
+    for(var item of this)
+  },
 
   // getBasketTotal: function(){
 
@@ -70,10 +72,7 @@ var ShopBox = React.createClass({
           <ShoppingBasketHeader />
           <ShoppingBasketExpandButton />
           <ShoppingBasketDetails />
-          <StockItemsList 
-          addItem={this.addItemToBasket} 
-          // removeItem={this.removeItemFromBasket}
-          stock={this.state.stockData}/>
+          <StockItemsList addItemToBasket={this.addItemToBasket} removeItemFromBasket={this.removeItemFromBasket} stock={this.state.stockData}/>
         </div>
         <div className='col-1'></div>
       </div>

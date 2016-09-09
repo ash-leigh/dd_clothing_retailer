@@ -4,6 +4,7 @@ var StockItem = require('../models/StockItem');
 var EditBasketItem= React.createClass({
 
   handleItemClick: function(){
+    console.log('handle click');
     var selectedItem = new StockItem({
       id: this.props.id,
       description: this.props.description,
@@ -15,12 +16,16 @@ var EditBasketItem= React.createClass({
       stockQuantity: this.props.stockQuantity
     })
     console.log(selectedItem)
-    this.props.addItem(selectedItem);
+    if(this.props.display === '+'){
+      this.props.addItemToBasket(selectedItem);
+    }else{
+      this.props.removeItemFromBasket(selectedItem);
+    }
   },
 
   render: function(){
     return(
-      <button onClick={this.handleAddItemClick}>{this.props.display}</button>
+      <button onClick={this.handleItemClick}>{this.props.display}</button>
     )
   }
 

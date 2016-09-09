@@ -6,14 +6,14 @@ var EditBasketItem= React.createClass({
   handleItemClick: function(){
     console.log('handle click');
     var selectedItem = new StockItem({
-      id: this.props.id,
-      description: this.props.description,
-      colour: this.props.colour,
-      department: this.props.department,
+      id: this.props.stockItem.id,
+      description: this.props.stockItem.description,
+      colour: this.props.stockItem.colour,
+      department: this.props.stockItem.department,
       category: this.props.category,
-      retailPrice: this.props.retailPrice,
-      salePrice: this.props.salePrice,
-      stockQuantity: this.props.stockQuantity
+      retailPrice: this.props.stockItem.retailPrice,
+      salePrice: this.props.stockItem.salePrice,
+      stockQuantity: this.props.stockItem.stockQuantity
     })
     console.log(selectedItem)
     if(this.props.display === '+'){

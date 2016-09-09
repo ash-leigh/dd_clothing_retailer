@@ -2,51 +2,56 @@ var React = require('react');
 var EditBasketButton = require('./EditBasketButton');
 var ItemsInBasketCount = require('./ItemsInBasketCount');
 
-var StockItem = function(props){
-  return(
-    <div className='col-4'>
-      <div className='row'>
-        {props.description}
-       </div>
-       <div className='row'>
-        IMAGE
-       </div>
-       <div className='row'>
-       {props.retailPrice}
-       </div>
-       <div className='row'>
-         <div className='col-6'>
-         {props.salePrice}
+var StockItem = React.createClass({
+
+  getInitialState: function(){
+    return{
+      stockItem: {
+      id: this.props.id,
+      description: this.props.description,
+      colour: this.props.description,
+      department: this.props.department,
+      category: this.props.category,
+      retailPrice: this.props.retailPrice,
+      salePrice: this.props.salePrice,
+      stockQuantity: this.props.stockQuantity
+      }
+    } 
+  },
+
+  render: function(){
+    return(
+      <div className='col-4'>
+        <div className='row'>
+          {this.state.stockItem.description}
          </div>
-         <div className='col-6'>
-           <EditBasketButton 
-           display='-'
-           removeItemFromBasket={props.removeItemFromBasket}
-           id={props.id}
-           description={props.description}
-           colour={props.colour}
-           department= {props.department}
-           category={props.category}
-           retailPrice={props.retailPrice}
-           salePrice={props.salePrice}
-           stockQuantity={props.stockQuantity}/>
-           <ItemsInBasketCount />
-           <EditBasketButton 
-           display='+' 
-           addItemToBasket={props.addItemToBasket}
-           id={props.id}
-           description={props.description}
-           colour={props.colour}
-           department= {props.department}
-           category={props.category}
-           retailPrice={props.retailPrice}
-           salePrice={props.salePrice}
-           stockQuantity={props.stockQuantity}/>
+         <div className='row'>
+          IMAGE
          </div>
-       </div>
-    </div>
-  )
-}
+         <div className='row'>
+         {this.state.stockItem.retailPrice}
+         </div>
+         <div className='row'>
+           <div className='col-6'>
+           {this.state.stockItem.salePrice}
+           </div>
+           <div className='col-6'>
+             <EditBasketButton 
+             display='-'
+             removeItemFromBasket={this.props.removeItemFromBasket}
+             stockItem={this.state.stockItem}/>
+             <ItemsInBasketCount />
+             <EditBasketButton 
+             display='+' 
+             addItemToBasket={this.props.addItemToBasket}
+             stockItem={this.state.stockItem}/>
+           </div>
+         </div>
+      </div>
+    )
+  }
+})
+
 
 module.exports = StockItem;
 

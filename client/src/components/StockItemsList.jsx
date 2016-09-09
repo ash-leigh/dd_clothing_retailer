@@ -17,6 +17,7 @@ var StockItemsList = function(props){
       stockQuantity={item.stockQuantity}
       addItemToBasket={props.addItemToBasket}
       removeItemFromBasket={props.removeItemFromBasket}
+      getNumberOfItemInBasket={props.getNumberOfItemInBasket}
       />
     )
   })    

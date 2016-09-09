@@ -19,15 +19,32 @@ ShoppingCart.prototype = {
     }
   },
 
-  removeItem: function(item){
-    var index = this.items.indexOf(item);
-    this.items.splice(index, 1);
-    if(item.salePrice){
-      this.total -= item.salePrice;
+  removeItem: function(removedItem){
+    
+    for(var item of this.items){
+      if(item.id === removedItem.id){
+
+        var index = this.items.indexOf(removedItem)+ 1;
+        console.log(index)
+        this.items.splice(index, 1);
+      }
+    }
+    if(removedItem.salePrice){
+      this.total -= removedItem.salePrice;
     }
     else{
-      this.total -= item.retailPrice;
+      this.total -= removedItem.retailPrice;
     }
+  },
+
+  numberOfItemCount: function(checkItem){
+    var count = 0;
+    _.forEach(this.items, function(item){
+      if(item.id === checkItem.id){
+        count += 1;
+      }
+    })
+    return count;
   },
 
   checkItemsEligibleForVoucher: function(voucher){

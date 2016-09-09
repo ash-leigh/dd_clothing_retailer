@@ -4,7 +4,7 @@ var ShopBox = require('./components/ShopBox.jsx');
 
 window.onload = function(){
   ReactDOM.render(
-    <ShopBox url='/api/stock'/>,
+    <ShopBox stockUrl='/api/stock' voucherUrl='/api/vouchers'/>,
     document.getElementById('app')
   );
 }

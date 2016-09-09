@@ -51,7 +51,7 @@
 	var ShopBox = __webpack_require__(172);
 	
 	window.onload = function () {
-	  ReactDOM.render(React.createElement(ShopBox, { url: '/api/stock' }), document.getElementById('app'));
+	  ReactDOM.render(React.createElement(ShopBox, { stockUrl: '/api/stock', voucherUrl: '/api/vouchers' }), document.getElementById('app'));
 	};
 
 /***/ },
@@ -21440,13 +21440,14 @@
 	
 	var ShoppingCart = __webpack_require__(182);
 	var StockItem = __webpack_require__(183);
+	var Voucher = __webpack_require__(188);
 	
 	var ShopBox = React.createClass({
 	  displayName: 'ShopBox',
 	
 	
 	  getInitialState: function getInitialState() {
-	    return { stockData: [], shoppingCart: [] };
+	    return { stockData: [], shoppingCart: [], voucherData: [], total: 0, numberOfItemCount: 0 };
 	  },
 	
 	  populateShoppingCart: function populateShoppingCart() {
@@ -21492,13 +21493,23 @@
 	  },
 	
 	  getNumberOfItemInBasket: function getNumberOfItemInBasket(item) {
-	    var shoppingCart = populateShoppingCart();
-	    return this.shoppingCart.numberOfItemCount(item);
+	    var shoppingCart = this.populateShoppingCart();
+	    return;
+	    this.setState({ numberOfItemCount: shoppingCart.numberOfItemCount(item) });
+	  },
+	
+	  getShoppingCartTotal: function getShoppingCartTotal() {
+	    var shoppingCart = this.populateShoppingCart();
+	    this.setState({ total: shoppingCart.total });
+	  },
+	
+	  getTotalItemsInBasket: function getTotalItemsInBasket() {
+	    return this.state.shoppingCart.length;
 	  },
 	
 	  loadStockFromServer: function loadStockFromServer() {
 	    var request = new XMLHttpRequest();
-	    request.open('GET', this.props.url);
+	    request.open('GET', this.props.stockUrl);
 	    request.onload = function () {
 	      if (request.status === 200) {
 	        var stock = JSON.parse(request.responseText);
@@ -21508,12 +21519,26 @@
 	    request.send(null);
 	  },
 	
-	  componentDidMount: function componentDidMount() {
-	    this.loadStockFromServer();
+	  loadVouchersFromServer: function loadVouchersFromServer() {
+	    var request = new XMLHttpRequest();
+	    request.open('GET', this.props.voucherUrl);
+	    request.onload = function () {
+	      if (request.status === 200) {
+	        var vouchers = JSON.parse(request.responseText);
+	        this.setState({ voucherData: vouchers });
+	      }
+	    }.bind(this);
+	    request.send(null);
 	  },
 	
-	  render: function render() {
+	  componentDidMount: function componentDidMount() {
+	    this.loadStockFromServer();
+	    this.loadVouchersFromServer();
+	  },
+	
+	  checkVoucherCode: function checkVoucherCode(code) {
 	    var shoppingCart = new ShoppingCart();
+	
 	    var _iteratorNormalCompletion2 = true;
 	    var _didIteratorError2 = false;
 	    var _iteratorError2 = undefined;
@@ -21522,7 +21547,7 @@
 	      for (var _iterator2 = this.state.shoppingCart[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
 	        var item = _step2.value;
 	
-	        shoppingCart.addItem(item);
+	        shoppingCart.addItem(new StockItem(item));
 	      }
 	    } catch (err) {
 	      _didIteratorError2 = true;
@@ -21539,6 +21564,66 @@
 	      }
 	    }
 	
+	    console.log(shoppingCart);
+	    var _iteratorNormalCompletion3 = true;
+	    var _didIteratorError3 = false;
+	    var _iteratorError3 = undefined;
+	
+	    try {
+	      for (var _iterator3 = this.state.voucherData[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+	        var voucher = _step3.value;
+	
+	        var checkVoucher = new Voucher(voucher);
+	        if (checkVoucher.code === code) {
+	          shoppingCart.applyVoucher(checkVoucher);
+	          console.log(shoppingCart.total);
+	
+	          this.setState({ shoppingCart: shoppingCart.items });
+	        }
+	      }
+	    } catch (err) {
+	      _didIteratorError3 = true;
+	      _iteratorError3 = err;
+	    } finally {
+	      try {
+	        if (!_iteratorNormalCompletion3 && _iterator3.return) {
+	          _iterator3.return();
+	        }
+	      } finally {
+	        if (_didIteratorError3) {
+	          throw _iteratorError3;
+	        }
+	      }
+	    }
+	  },
+	
+	  render: function render() {
+	    var shoppingCart = new ShoppingCart();
+	    var _iteratorNormalCompletion4 = true;
+	    var _didIteratorError4 = false;
+	    var _iteratorError4 = undefined;
+	
+	    try {
+	      for (var _iterator4 = this.state.shoppingCart[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+	        var item = _step4.value;
+	
+	        shoppingCart.addItem(item);
+	      }
+	    } catch (err) {
+	      _didIteratorError4 = true;
+	      _iteratorError4 = err;
+	    } finally {
+	      try {
+	        if (!_iteratorNormalCompletion4 && _iterator4.return) {
+	          _iterator4.return();
+	        }
+	      } finally {
+	        if (_didIteratorError4) {
+	          throw _iteratorError4;
+	        }
+	      }
+	    }
+	
 	    return React.createElement(
 	      'div',
 	      { className: 'row col-12' },
@@ -21547,9 +21632,9 @@
 	        'div',
 	        { className: 'col-10' },
 	        React.createElement(ShopHeader, null),
-	        React.createElement(ShoppingBasketHeader, null),
+	        React.createElement(ShoppingBasketHeader, { getShoppingCartTotal: this.state.getShoppingCartTotal, getTotalItemsInBasket: this.state.numberOfItemCount }),
 	        React.createElement(ShoppingBasketExpandButton, null),
-	        React.createElement(ShoppingBasketDetails, null),
+	        React.createElement(ShoppingBasketDetails, { checkVoucherCode: this.checkVoucherCode }),
 	        React.createElement(StockItemsList, { addItemToBasket: this.addItemToBasket, removeItemFromBasket: this.removeItemFromBasket, stock: this.state.stockData, getNumberOfItemInBasket: this.getNumberOfItemInBasket })
 	      ),
 	      React.createElement('div', { className: 'col-1' })
@@ -21594,12 +21679,12 @@
 	    React.createElement(
 	      'div',
 	      null,
-	      props.numberOfItemsInBasket
+	      props.getShoppingCartTotal
 	    ),
 	    React.createElement(
 	      'div',
 	      null,
-	      props.basketTotal
+	      props.getTotalItemsInBasket
 	    )
 	  );
 	};
@@ -21634,7 +21719,7 @@
 	var ShoppingBasketItemsList = __webpack_require__(177);
 	var VoucherForm = __webpack_require__(179);
 	
-	var ShoppingBasketDetails = function ShoppingBasketDetails() {
+	var ShoppingBasketDetails = function ShoppingBasketDetails(props) {
 	  return React.createElement(
 	    'div',
 	    { className: 'row' },
@@ -21647,7 +21732,7 @@
 	    React.createElement(
 	      'div',
 	      { className: 'row' },
-	      React.createElement(VoucherForm, null)
+	      React.createElement(VoucherForm, { checkVoucherCode: props.checkVoucherCode })
 	    )
 	  );
 	};
@@ -21704,13 +21789,39 @@
 	
 	var React = __webpack_require__(1);
 	
-	var VoucherForm = function VoucherForm() {
-	  return React.createElement(
-	    'div',
-	    null,
-	    'VoucherForm;'
-	  );
-	};
+	var VoucherForm = React.createClass({
+	  displayName: 'VoucherForm',
+	
+	
+	  getInitialState: function getInitialState() {
+	    return { voucherCode: 0 };
+	  },
+	
+	  setVoucherCodeOnChange: function setVoucherCodeOnChange(event) {
+	    event.preventDefault();
+	    this.setState({ voucherCode: event.target.value });
+	  },
+	
+	  handleVoucherClick: function handleVoucherClick() {
+	    console.log('entered click');
+	    this.props.checkVoucherCode(this.state.voucherCode);
+	  },
+	
+	  render: function render() {
+	    return React.createElement(
+	      'div',
+	      null,
+	      'VoucherForm:',
+	      React.createElement('input', { type: 'text', onChange: this.setVoucherCodeOnChange }),
+	      React.createElement(
+	        'button',
+	        { onClick: this.handleVoucherClick },
+	        'apply voucher'
+	      )
+	    );
+	  }
+	
+	});
 	
 	module.exports = VoucherForm;
 
@@ -21818,7 +21929,7 @@
 	            display: '-',
 	            removeItemFromBasket: this.props.removeItemFromBasket,
 	            stockItem: this.state.stockItem }),
-	          React.createElement(ItemsInBasketCount, null),
+	          React.createElement(ItemsInBasketCount, { getNumberOfItemInBasket: this.props.getNumberOfItemInBasket, stockItem: this.state.stockItem }),
 	          React.createElement(EditBasketButton, {
 	            display: '+',
 	            addItemToBasket: this.props.addItemToBasket,
@@ -21842,7 +21953,7 @@
 	var _ = __webpack_require__(184);
 	
 	var ShoppingCart = function ShoppingCart() {
-	  this.items = [], this.total = 0;
+	  this.items = [], this.total = 0, this.availableVouchers = [];
 	};
 	
 	ShoppingCart.prototype = {
@@ -21857,37 +21968,12 @@
 	  },
 	
 	  removeItem: function removeItem(removedItem) {
-	    var _iteratorNormalCompletion = true;
-	    var _didIteratorError = false;
-	    var _iteratorError = undefined;
 	
-	    try {
-	
-	      for (var _iterator = this.items[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-	        var item = _step.value;
-	
-	        if (item.id === removedItem.id) {
-	
-	          var index = this.items.indexOf(removedItem) + 1;
-	          console.log(index);
-	          this.items.splice(index, 1);
-	        }
-	      }
-	    } catch (err) {
-	      _didIteratorError = true;
-	      _iteratorError = err;
-	    } finally {
-	      try {
-	        if (!_iteratorNormalCompletion && _iterator.return) {
-	          _iterator.return();
-	        }
-	      } finally {
-	        if (_didIteratorError) {
-	          throw _iteratorError;
-	        }
+	    for (var i = 0; i < this.items.length; i++) {
+	      if (this.items[i].id === removedItem.id) {
+	        this.items.splice(i, 1);
 	      }
 	    }
-	
 	    if (removedItem.salePrice) {
 	      this.total -= removedItem.salePrice;
 	    } else {
@@ -21899,11 +21985,13 @@
 	    var count = 0;
 	    _.forEach(this.items, function (item) {
 	      if (item.id === checkItem.id) {
-	        count += 1;
+	        count++;
 	      }
 	    });
 	    return count;
 	  },
+	
+	  checkVoucherCode: function checkVoucherCode(code) {},
 	
 	  checkItemsEligibleForVoucher: function checkItemsEligibleForVoucher(voucher) {
 	    var matchedItems = [];
@@ -38764,11 +38852,26 @@
 	  return React.createElement(
 	    'div',
 	    null,
-	    '0'
+	    props.getNumberOfItemInBasket(props.stockItem)
 	  );
 	};
 	
 	module.exports = ItemsInBasketCount;
+
+/***/ },
+/* 188 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	var Voucher = function Voucher(params) {
+	  this.code = params.code;
+	  this.discount = params.discount;
+	  this.eligibilityCriteria = params.eligibilityCriteria;
+	  this.threshold = params.threshold;
+	};
+	
+	module.exports = Voucher;
 
 /***/ }
 /******/ ]);

@@ -2,7 +2,7 @@ var React = require('react');
 
 var ItemsInBasketCount = function(props){
   return(
-    <div>0</div>
+    <div>{props.getNumberOfItemInBasket(props.stockItem)}</div>
   )
 }
 

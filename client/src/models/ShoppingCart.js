@@ -4,7 +4,8 @@ var _ = require('lodash');
 
 var ShoppingCart = function(){
   this.items = [],
-  this.total = 0
+  this.total = 0,
+  this.availableVouchers = []
 };
 
 ShoppingCart.prototype = {
@@ -20,13 +21,10 @@ ShoppingCart.prototype = {
   },
 
   removeItem: function(removedItem){
-    
-    for(var item of this.items){
-      if(item.id === removedItem.id){
 
-        var index = this.items.indexOf(removedItem)+ 1;
-        console.log(index)
-        this.items.splice(index, 1);
+    for(var i = 0; i < this.items.length; i++){
+      if(this.items[i].id === removedItem.id){
+        this.items.splice(i, 1);
       }
     }
     if(removedItem.salePrice){
@@ -41,10 +39,14 @@ ShoppingCart.prototype = {
     var count = 0;
     _.forEach(this.items, function(item){
       if(item.id === checkItem.id){
-        count += 1;
+        count++;
       }
     })
     return count;
+  },
+
+  checkVoucherCode: function(code){
+
   },
 
   checkItemsEligibleForVoucher: function(voucher){

@@ -2,7 +2,7 @@ var React = require('react');
 var ShoppingBasketItemsList = require('./ShoppingBasketItemsList');
 var VoucherForm = require('./VoucherForm');
 
-var ShoppingBasketDetails = function(){
+var ShoppingBasketDetails = function(props){
   return(
     <div className= 'row'>
       ShoppingBasketDetails:
@@ -10,7 +10,7 @@ var ShoppingBasketDetails = function(){
         <ShoppingBasketItemsList />
       </div>
       <div className='row'>
-        <VoucherForm />
+        <VoucherForm checkVoucherCode={props.checkVoucherCode}/>
       </div>
     </div>
   )

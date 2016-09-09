@@ -40,7 +40,7 @@ var StockItem = React.createClass({
              display='-'
              removeItemFromBasket={this.props.removeItemFromBasket}
              stockItem={this.state.stockItem}/>
-             <ItemsInBasketCount />
+             <ItemsInBasketCount getNumberOfItemInBasket={this.props.getNumberOfItemInBasket} stockItem={this.state.stockItem}/>
              <EditBasketButton 
              display='+' 
              addItemToBasket={this.props.addItemToBasket}

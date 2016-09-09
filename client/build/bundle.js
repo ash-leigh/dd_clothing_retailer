@@ -21433,25 +21433,70 @@
 	
 	var React = __webpack_require__(1);
 	var ShopHeader = __webpack_require__(173);
-	var ShoppingBasketHeader = __webpack_require__(180);
-	var ShoppingBasketExpandButton = __webpack_require__(174);
-	var ShoppingBasketDetails = __webpack_require__(175);
-	var StockItemsList = __webpack_require__(178);
+	var ShoppingBasketHeader = __webpack_require__(174);
+	var ShoppingBasketExpandButton = __webpack_require__(175);
+	var ShoppingBasketDetails = __webpack_require__(176);
+	var StockItemsList = __webpack_require__(180);
 	
-	var ShoppingCart = __webpack_require__(186);
+	var ShoppingCart = __webpack_require__(184);
 	
 	var ShopBox = React.createClass({
 	  displayName: 'ShopBox',
 	
 	
 	  getInitialState: function getInitialState() {
-	    var shoppingCart = new ShoppingCart();
-	    return { stockData: [], shoppingCart: shoppingCart };
+	    return { stockData: [], shoppingCart: [] };
 	  },
 	
-	  getNumberOfItemsInBasket: function getNumberOfItemsInBasket() {},
+	  addItemToBasket: function addItemToBasket(selectedItem) {
+	    var shoppingCart = new ShoppingCart();
+	    var _iteratorNormalCompletion = true;
+	    var _didIteratorError = false;
+	    var _iteratorError = undefined;
 	
-	  getBasketTotal: function getBasketTotal() {},
+	    try {
+	      for (var _iterator = this.state.shoppingCart[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+	        var item = _step.value;
+	
+	        shoppingCart.addItem(new StockItem());
+	      }
+	    } catch (err) {
+	      _didIteratorError = true;
+	      _iteratorError = err;
+	    } finally {
+	      try {
+	        if (!_iteratorNormalCompletion && _iterator.return) {
+	          _iterator.return();
+	        }
+	      } finally {
+	        if (_didIteratorError) {
+	          throw _iteratorError;
+	        }
+	      }
+	    }
+	
+	    shoppingCart.addItem(selectedItem);
+	    this.setState({ shoppingCart: shoppingCart.items });
+	  },
+	
+	  // removeItemFromBasket: function(removedItem){
+	  //   var shoppingCart = new ShoppingCart();
+	  //   for(var item of this.state.shoppingCart){
+	  //     shoppingCart.addItem(new StockItem());
+	  //   }
+	  //   shoppingCart.removeItem(removedItem);
+	  //   this.setState({shoppingCart: shoppingCart.items})
+	  // },
+	
+	  // getNumberOfItemsInBasket: function(){
+	
+	  // },
+	
+	  // getBasketTotal: function(){
+	
+	  // },
+	
+	  // numberOfItemsInBasket= {this.getNumberOfItemsInBasket} basketTotal={getBasketTotal}
 	
 	  loadStockFromServer: function loadStockFromServer() {
 	    var request = new XMLHttpRequest();
@@ -21459,7 +21504,7 @@
 	    request.onload = function () {
 	      if (request.status === 200) {
 	        var stock = JSON.parse(request.responseText);
-	        this.setState({ data: stock });
+	        this.setState({ stockData: stock });
 	      }
 	    }.bind(this);
 	    request.send(null);
@@ -21470,6 +21515,32 @@
 	  },
 	
 	  render: function render() {
+	    var shoppingCart = new ShoppingCart();
+	    var _iteratorNormalCompletion2 = true;
+	    var _didIteratorError2 = false;
+	    var _iteratorError2 = undefined;
+	
+	    try {
+	      for (var _iterator2 = this.state.shoppingCart[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+	        var item = _step2.value;
+	
+	        shoppingCart.addItem(item);
+	      }
+	    } catch (err) {
+	      _didIteratorError2 = true;
+	      _iteratorError2 = err;
+	    } finally {
+	      try {
+	        if (!_iteratorNormalCompletion2 && _iterator2.return) {
+	          _iterator2.return();
+	        }
+	      } finally {
+	        if (_didIteratorError2) {
+	          throw _iteratorError2;
+	        }
+	      }
+	    }
+	
 	    return React.createElement(
 	      'div',
 	      { className: 'row col-12' },
@@ -21478,10 +21549,13 @@
 	        'div',
 	        { className: 'col-10' },
 	        React.createElement(ShopHeader, null),
-	        React.createElement(ShoppingBasketHeader, { numberOfItemsInBasket: this.getNumberOfItemsInBasket, basketTotal: getBasketTotal }),
+	        React.createElement(ShoppingBasketHeader, null),
 	        React.createElement(ShoppingBasketExpandButton, null),
 	        React.createElement(ShoppingBasketDetails, null),
-	        React.createElement(StockItemsList, { stock: this.state.stockData })
+	        React.createElement(StockItemsList, {
+	          addItem: this.addItemToBasket
+	          // removeItem={this.removeItemFromBasket}
+	          , stock: this.state.stockData })
 	      ),
 	      React.createElement('div', { className: 'col-1' })
 	    );
@@ -21503,7 +21577,7 @@
 	  return React.createElement(
 	    'div',
 	    { className: 'row' },
-	    React.createElement('img', { src: '../../build/images/dd_retail_logo.png' })
+	    '//'
 	  );
 	};
 	
@@ -21511,182 +21585,6 @@
 
 /***/ },
 /* 174 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var React = __webpack_require__(1);
-	
-	var ShoppingBasketExpandButton = function ShoppingBasketExpandButton() {
-	  return React.createElement(
-	    'div',
-	    { className: 'row' },
-	    'ShoppingBasketExpandButton'
-	  );
-	};
-	
-	module.exports = ShoppingBasketExpandButton;
-
-/***/ },
-/* 175 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var React = __webpack_require__(1);
-	var ShoppingBasketItemsList = __webpack_require__(176);
-	var VoucherForm = __webpack_require__(177);
-	
-	var ShoppingBasketDetails = function ShoppingBasketDetails() {
-	  return React.createElement(
-	    'div',
-	    { className: 'row' },
-	    'ShoppingBasketDetails:',
-	    React.createElement(
-	      'div',
-	      { className: 'row' },
-	      React.createElement(ShoppingBasketItemsList, null)
-	    ),
-	    React.createElement(
-	      'div',
-	      { className: 'row' },
-	      React.createElement(VoucherForm, null)
-	    )
-	  );
-	};
-	
-	module.exports = ShoppingBasketDetails;
-
-/***/ },
-/* 176 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var React = __webpack_require__(1);
-	var ShoppingBasketItem = __webpack_require__(181);
-	
-	var ShoppingBasketItemsList = function ShoppingBasketItemsList() {
-	  return React.createElement(
-	    'div',
-	    null,
-	    'ShoppingBasketItemsList:',
-	    React.createElement(
-	      'div',
-	      { className: 'row' },
-	      React.createElement(ShoppingBasketItem, null)
-	    )
-	  );
-	};
-	
-	module.exports = ShoppingBasketItemsList;
-
-/***/ },
-/* 177 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var React = __webpack_require__(1);
-	
-	var VoucherForm = function VoucherForm() {
-	  return React.createElement(
-	    'div',
-	    null,
-	    'VoucherForm;'
-	  );
-	};
-	
-	module.exports = VoucherForm;
-
-/***/ },
-/* 178 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var React = __webpack_require__(1);
-	var StockItem = __webpack_require__(179);
-	
-	var StockItemsList = function StockItemsList(props) {
-	
-	  var stockNodes = props.stock.map(function (stock) {
-	    return React.createElement(StockItem, {
-	      key: stock.id,
-	      description: stock.description,
-	      colour: stock.colour,
-	      department: stock.department,
-	      category: stock.category,
-	      retailPrice: stock.retailPrice,
-	      salePrice: stock.salePrice,
-	      stockQuantity: stock.stockQuantity });
-	  });
-	  return React.createElement(
-	    'div',
-	    { className: 'row' },
-	    'StockItemsList:',
-	    React.createElement(
-	      'div',
-	      { className: 'row' },
-	      stockNodes
-	    )
-	  );
-	};
-	
-	module.exports = StockItemsList;
-
-/***/ },
-/* 179 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var React = __webpack_require__(1);
-	var EditBasketButton = __webpack_require__(184);
-	var ItemsInBasketCount = __webpack_require__(183);
-	
-	var StockItem = function StockItem(props) {
-	  return React.createElement(
-	    'div',
-	    { className: 'col-4 stock-item' },
-	    React.createElement(
-	      'div',
-	      { className: 'row' },
-	      props.description
-	    ),
-	    React.createElement(
-	      'div',
-	      { className: 'row' },
-	      'IMAGE'
-	    ),
-	    React.createElement(
-	      'div',
-	      { className: 'row' },
-	      props.retailPrice
-	    ),
-	    React.createElement(
-	      'div',
-	      { className: 'row' },
-	      React.createElement(
-	        'div',
-	        { className: 'col-6' },
-	        props.salePrice
-	      ),
-	      React.createElement(
-	        'div',
-	        { className: 'col-6' },
-	        React.createElement(EditBasketButton, { display: '-' }),
-	        React.createElement(ItemsInBasketCount, null),
-	        React.createElement(EditBasketButton, { display: '+' })
-	      )
-	    )
-	  );
-	};
-	
-	module.exports = StockItem;
-
-/***/ },
-/* 180 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21714,7 +21612,79 @@
 	module.exports = ShoppingBasketHeader;
 
 /***/ },
-/* 181 */
+/* 175 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var React = __webpack_require__(1);
+	
+	var ShoppingBasketExpandButton = function ShoppingBasketExpandButton() {
+	  return React.createElement(
+	    'div',
+	    { className: 'row' },
+	    'ShoppingBasketExpandButton'
+	  );
+	};
+	
+	module.exports = ShoppingBasketExpandButton;
+
+/***/ },
+/* 176 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var React = __webpack_require__(1);
+	var ShoppingBasketItemsList = __webpack_require__(177);
+	var VoucherForm = __webpack_require__(179);
+	
+	var ShoppingBasketDetails = function ShoppingBasketDetails() {
+	  return React.createElement(
+	    'div',
+	    { className: 'row' },
+	    'ShoppingBasketDetails:',
+	    React.createElement(
+	      'div',
+	      { className: 'row' },
+	      React.createElement(ShoppingBasketItemsList, null)
+	    ),
+	    React.createElement(
+	      'div',
+	      { className: 'row' },
+	      React.createElement(VoucherForm, null)
+	    )
+	  );
+	};
+	
+	module.exports = ShoppingBasketDetails;
+
+/***/ },
+/* 177 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var React = __webpack_require__(1);
+	var ShoppingBasketItem = __webpack_require__(178);
+	
+	var ShoppingBasketItemsList = function ShoppingBasketItemsList() {
+	  return React.createElement(
+	    'div',
+	    null,
+	    'ShoppingBasketItemsList:',
+	    React.createElement(
+	      'div',
+	      { className: 'row' },
+	      React.createElement(ShoppingBasketItem, null)
+	    )
+	  );
+	};
+	
+	module.exports = ShoppingBasketItemsList;
+
+/***/ },
+/* 178 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21732,7 +21702,177 @@
 	module.exports = ShoppingBasketItem;
 
 /***/ },
-/* 182 */,
+/* 179 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var React = __webpack_require__(1);
+	
+	var VoucherForm = function VoucherForm() {
+	  return React.createElement(
+	    'div',
+	    null,
+	    'VoucherForm;'
+	  );
+	};
+	
+	module.exports = VoucherForm;
+
+/***/ },
+/* 180 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var React = __webpack_require__(1);
+	var StockItem = __webpack_require__(181);
+	
+	var StockItemsList = function StockItemsList(props) {
+	
+	  var stockNodes = props.stock.map(function (item) {
+	    return React.createElement(StockItem, {
+	      key: item.id,
+	      id: item.id,
+	      description: item.description,
+	      colour: item.colour,
+	      department: item.department,
+	      category: item.category,
+	      retailPrice: item.retailPrice,
+	      salePrice: item.salePrice,
+	      stockQuantity: item.stockQuantity,
+	
+	      addItem: props.addItem
+	      // removeItem={props.removeItem}
+	    });
+	  });
+	  return React.createElement(
+	    'div',
+	    { className: 'row' },
+	    'StockItemsList:',
+	    React.createElement(
+	      'div',
+	      { className: 'row' },
+	      stockNodes
+	    )
+	  );
+	};
+	
+	module.exports = StockItemsList;
+
+/***/ },
+/* 181 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var React = __webpack_require__(1);
+	var EditBasketButton = __webpack_require__(182);
+	var ItemsInBasketCount = __webpack_require__(183);
+	
+	var StockItem = function StockItem(props) {
+	  return React.createElement(
+	    'div',
+	    { className: 'col-4' },
+	    React.createElement(
+	      'div',
+	      { className: 'row' },
+	      props.description
+	    ),
+	    React.createElement(
+	      'div',
+	      { className: 'row' },
+	      'IMAGE'
+	    ),
+	    React.createElement(
+	      'div',
+	      { className: 'row' },
+	      props.retailPrice
+	    ),
+	    React.createElement(
+	      'div',
+	      { className: 'row' },
+	      React.createElement(
+	        'div',
+	        { className: 'col-6' },
+	        props.salePrice
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'col-6' },
+	        React.createElement(EditBasketButton, {
+	          display: '-'
+	          // removeItem={props.removeItem}
+	
+	          , id: props.id,
+	          description: props.description,
+	          colour: props.colour,
+	          department: props.department,
+	          category: props.category,
+	          retailPrice: props.retailPrice,
+	          salePrice: props.salePrice,
+	          stockQuantity: props.stockQuantity }),
+	        React.createElement(ItemsInBasketCount, null),
+	        React.createElement(EditBasketButton, {
+	          display: '+',
+	          addItem: props.addItem,
+	
+	          id: props.id,
+	          description: props.description,
+	          colour: props.colour,
+	          department: props.department,
+	          category: props.category,
+	          retailPrice: props.retailPrice,
+	          salePrice: props.salePrice,
+	          stockQuantity: props.stockQuantity })
+	      )
+	    )
+	  );
+	};
+	
+	module.exports = StockItem;
+
+/***/ },
+/* 182 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var React = __webpack_require__(1);
+	var StockItem = __webpack_require__(185);
+	
+	var EditBasketItem = React.createClass({
+	  displayName: 'EditBasketItem',
+	
+	
+	  handleItemClick: function handleItemClick() {
+	    var selectedItem = new StockItem({
+	      id: this.props.id,
+	      description: this.props.description,
+	      colour: this.props.colour,
+	      department: this.props.department,
+	      category: this.props.category,
+	      retailPrice: this.props.retailPrice,
+	      salePrice: this.props.salePrice,
+	      stockQuantity: this.props.stockQuantity
+	    });
+	    console.log(selectedItem);
+	    this.props.addItem(selectedItem);
+	  },
+	
+	  render: function render() {
+	    return React.createElement(
+	      'button',
+	      { onClick: this.handleAddItemClick },
+	      this.props.display
+	    );
+	  }
+	
+	});
+	
+	module.exports = EditBasketItem;
+
+/***/ },
 /* 183 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -21756,28 +21896,9 @@
 
 	'use strict';
 	
-	var React = __webpack_require__(1);
-	
-	var EditBasketItem = function EditBasketItem(props) {
-	  return React.createElement(
-	    'button',
-	    null,
-	    props.display
-	  );
-	};
-	
-	module.exports = EditBasketItem;
-
-/***/ },
-/* 185 */,
-/* 186 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var ShoppingCart = __webpack_require__(186);
-	var StockItem = __webpack_require__(187);
-	var _ = __webpack_require__(188);
+	var ShoppingCart = __webpack_require__(184);
+	var StockItem = __webpack_require__(185);
+	var _ = __webpack_require__(186);
 	
 	var ShoppingCart = function ShoppingCart() {
 	  this.items = [], this.total = 0;
@@ -21832,7 +21953,7 @@
 	module.exports = ShoppingCart;
 
 /***/ },
-/* 187 */
+/* 185 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -21851,7 +21972,7 @@
 	module.exports = StockItem;
 
 /***/ },
-/* 188 */
+/* 186 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(global, module) {/**
@@ -38588,10 +38709,10 @@
 	  }
 	}.call(this));
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(189)(module)))
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(187)(module)))
 
 /***/ },
-/* 189 */
+/* 187 */
 /***/ function(module, exports) {
 
 	module.exports = function(module) {

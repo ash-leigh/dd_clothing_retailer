@@ -3,17 +3,22 @@ var StockItem = require('./StockItem');
 
 var StockItemsList = function(props){
     
-  var stockNodes = props.stock.map(function(stock){
+  var stockNodes = props.stock.map(function(item){
     return(
       <StockItem 
-      key={stock.id}
-      description={stock.description}
-      colour={stock.colour}
-      department={stock.department}
-      category={stock.category}
-      retailPrice={stock.retailPrice}
-      salePrice={stock.salePrice}
-      stockQuantity={stock.stockQuantity}/>
+      key= {item.id}
+      id= {item.id}
+      description= {item.description}
+      colour= {item.colour}
+      department= {item.department}
+      category={item.category}
+      retailPrice={item.retailPrice}
+      salePrice={item.salePrice}
+      stockQuantity={item.stockQuantity}
+
+      addItem={props.addItem}
+      // removeItem={props.removeItem}
+      />
     )
   })    
   return(

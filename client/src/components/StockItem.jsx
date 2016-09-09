@@ -4,7 +4,7 @@ var ItemsInBasketCount = require('./ItemsInBasketCount');
 
 var StockItem = function(props){
   return(
-    <div className='col-4 stock-item'>
+    <div className='col-4'>
       <div className='row'>
         {props.description}
        </div>
@@ -19,9 +19,31 @@ var StockItem = function(props){
          {props.salePrice}
          </div>
          <div className='col-6'>
-           <EditBasketButton display='-'/>
+           <EditBasketButton 
+           display='-'
+           // removeItem={props.removeItem}
+
+           id={props.id}
+           description={props.description}
+           colour={props.colour}
+           department= {props.department}
+           category={props.category}
+           retailPrice={props.retailPrice}
+           salePrice={props.salePrice}
+           stockQuantity={props.stockQuantity}/>
            <ItemsInBasketCount />
-           <EditBasketButton display='+'/>
+           <EditBasketButton 
+            display='+' 
+           addItem={props.addItem}
+
+           id={props.id}
+           description={props.description}
+           colour={props.colour}
+           department= {props.department}
+           category={props.category}
+           retailPrice={props.retailPrice}
+           salePrice={props.salePrice}
+           stockQuantity={props.stockQuantity}/>
          </div>
        </div>
     </div>
@@ -29,4 +51,5 @@ var StockItem = function(props){
 }
 
 module.exports = StockItem;
+
 

@@ -10,17 +10,36 @@ var ShoppingCart = require('../models/ShoppingCart')
 var ShopBox = React.createClass({
 
   getInitialState: function() {
-    var shoppingCart = new ShoppingCart;
-    return {stockData: [], shoppingCart: shoppingCart};
+    return {stockData: [], shoppingCart: []};
   },
 
-  getNumberOfItemsInBasket: function(){
-
+  addItemToBasket: function(selectedItem){
+    var shoppingCart = new ShoppingCart();
+    for(var item of this.state.shoppingCart){
+      shoppingCart.addItem(new StockItem());
+    }
+    shoppingCart.addItem(selectedItem);
+    this.setState({shoppingCart: shoppingCart.items})
   },
 
-  getBasketTotal: function(){
+  // removeItemFromBasket: function(removedItem){
+  //   var shoppingCart = new ShoppingCart();
+  //   for(var item of this.state.shoppingCart){
+  //     shoppingCart.addItem(new StockItem());
+  //   }
+  //   shoppingCart.removeItem(removedItem);
+  //   this.setState({shoppingCart: shoppingCart.items})
+  // },
 
-  },
+  // getNumberOfItemsInBasket: function(){
+
+  // },
+
+  // getBasketTotal: function(){
+
+  // },
+
+  // numberOfItemsInBasket= {this.getNumberOfItemsInBasket} basketTotal={getBasketTotal}
 
   loadStockFromServer: function(){
     var request = new XMLHttpRequest();
@@ -28,7 +47,7 @@ var ShopBox = React.createClass({
     request.onload = function(){
       if(request.status === 200){
         var stock = JSON.parse(request.responseText)
-        this.setState({data: stock})
+        this.setState({stockData: stock})
       }
     }.bind(this)
     request.send(null);
@@ -39,15 +58,22 @@ var ShopBox = React.createClass({
   },
 
   render: function(){
+    var shoppingCart = new ShoppingCart();
+    for(var item of this.state.shoppingCart){
+      shoppingCart.addItem(item);
+    }
     return(
       <div className='row col-12'>
         <div className='col-1'></div>
         <div className='col-10'>
           <ShopHeader />
-          <ShoppingBasketHeader numberOfItemsInBasket= {this.getNumberOfItemsInBasket} basketTotal={getBasketTotal}/>
+          <ShoppingBasketHeader />
           <ShoppingBasketExpandButton />
           <ShoppingBasketDetails />
-          <StockItemsList stock={this.state.stockData}/>
+          <StockItemsList 
+          addItem={this.addItemToBasket} 
+          // removeItem={this.removeItemFromBasket}
+          stock={this.state.stockData}/>
         </div>
         <div className='col-1'></div>
       </div>

@@ -21447,7 +21447,7 @@
 	
 	
 	  getInitialState: function getInitialState() {
-	    return { stockData: [], shoppingCart: [], voucherData: [], total: 0, numberOfItemCount: 0 };
+	    return { stockData: [], shoppingCart: [], voucherData: [], total: 0, numberOfItems: 0 };
 	  },
 	
 	  populateShoppingCart: function populateShoppingCart() {
@@ -21483,28 +21483,18 @@
 	  addItemToBasket: function addItemToBasket(selectedItem) {
 	    var shoppingCart = this.populateShoppingCart();
 	    shoppingCart.addItem(selectedItem);
-	    this.setState({ shoppingCart: shoppingCart.items });
+	    this.setState({ shoppingCart: shoppingCart.items, total: shoppingCart.total, numberOfItems: shoppingCart.items.length });
 	  },
 	
 	  removeItemFromBasket: function removeItemFromBasket(removedItem) {
 	    var shoppingCart = this.populateShoppingCart();
 	    shoppingCart.removeItem(removedItem);
-	    this.setState({ shoppingCart: shoppingCart.items });
+	    this.setState({ shoppingCart: shoppingCart.items, total: shoppingCart.total, numberOfItems: shoppingCart.items.length });
 	  },
 	
 	  getNumberOfItemInBasket: function getNumberOfItemInBasket(item) {
 	    var shoppingCart = this.populateShoppingCart();
-	    return;
-	    this.setState({ numberOfItemCount: shoppingCart.numberOfItemCount(item) });
-	  },
-	
-	  getShoppingCartTotal: function getShoppingCartTotal() {
-	    var shoppingCart = this.populateShoppingCart();
-	    this.setState({ total: shoppingCart.total });
-	  },
-	
-	  getTotalItemsInBasket: function getTotalItemsInBasket() {
-	    return this.state.shoppingCart.length;
+	    return shoppingCart.numberOfItemCount(item);
 	  },
 	
 	  loadStockFromServer: function loadStockFromServer() {
@@ -21578,7 +21568,7 @@
 	          shoppingCart.applyVoucher(checkVoucher);
 	          console.log(shoppingCart.total);
 	
-	          this.setState({ shoppingCart: shoppingCart.items });
+	          this.setState({ shoppingCart: shoppingCart.items, total: shoppingCart.total, numberOfItems: shoppingCart.items.length });
 	        }
 	      }
 	    } catch (err) {
@@ -21632,7 +21622,7 @@
 	        'div',
 	        { className: 'col-10' },
 	        React.createElement(ShopHeader, null),
-	        React.createElement(ShoppingBasketHeader, { getShoppingCartTotal: this.state.getShoppingCartTotal, getTotalItemsInBasket: this.state.numberOfItemCount }),
+	        React.createElement(ShoppingBasketHeader, { total: this.state.total, items: this.state.numberOfItems }),
 	        React.createElement(ShoppingBasketExpandButton, null),
 	        React.createElement(ShoppingBasketDetails, { checkVoucherCode: this.checkVoucherCode }),
 	        React.createElement(StockItemsList, { addItemToBasket: this.addItemToBasket, removeItemFromBasket: this.removeItemFromBasket, stock: this.state.stockData, getNumberOfItemInBasket: this.getNumberOfItemInBasket })
@@ -21679,12 +21669,12 @@
 	    React.createElement(
 	      'div',
 	      null,
-	      props.getShoppingCartTotal
+	      props.total
 	    ),
 	    React.createElement(
 	      'div',
 	      null,
-	      props.getTotalItemsInBasket
+	      props.items
 	    )
 	  );
 	};

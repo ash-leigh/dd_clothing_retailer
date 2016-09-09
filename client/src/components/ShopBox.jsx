@@ -12,7 +12,7 @@ var Voucher = require('../models/Voucher');
 var ShopBox = React.createClass({
 
   getInitialState: function() {
-    return {stockData: [], shoppingCart: [], voucherData: [], total: 0, numberOfItemCount: 0};
+    return {stockData: [], shoppingCart: [], voucherData: [], total: 0, numberOfItems: 0};
   },
 
   populateShoppingCart: function(){
@@ -26,28 +26,18 @@ var ShopBox = React.createClass({
   addItemToBasket: function(selectedItem){
     var shoppingCart = this.populateShoppingCart();
     shoppingCart.addItem(selectedItem);
-    this.setState({shoppingCart: shoppingCart.items})
+    this.setState({shoppingCart: shoppingCart.items, total: shoppingCart.total, numberOfItems: shoppingCart.items.length})
   },
 
   removeItemFromBasket: function(removedItem){
     var shoppingCart = this.populateShoppingCart();
     shoppingCart.removeItem(removedItem);
-    this.setState({shoppingCart: shoppingCart.items})
+    this.setState({shoppingCart: shoppingCart.items, total: shoppingCart.total, numberOfItems: shoppingCart.items.length})
   },
 
   getNumberOfItemInBasket: function(item){
     var shoppingCart = this.populateShoppingCart();
-    return 
-    this.setState({numberOfItemCount: shoppingCart.numberOfItemCount(item)}) 
-  },
-
-  getShoppingCartTotal: function(){
-    var shoppingCart = this.populateShoppingCart();
-    this.setState({total: shoppingCart.total});
-  },
-
-  getTotalItemsInBasket: function(){
-    return this.state.shoppingCart.length;
+    return shoppingCart.numberOfItemCount(item);
   },
 
   loadStockFromServer: function(){
@@ -92,7 +82,7 @@ var ShopBox = React.createClass({
         shoppingCart.applyVoucher(checkVoucher);
         console.log(shoppingCart.total)
 
-        this.setState({shoppingCart: shoppingCart.items});
+        this.setState({shoppingCart: shoppingCart.items, total: shoppingCart.total, numberOfItems: shoppingCart.items.length});
       }
     }
 
@@ -108,7 +98,7 @@ var ShopBox = React.createClass({
         <div className='col-1'></div>
         <div className='col-10'>
           <ShopHeader />
-          <ShoppingBasketHeader getShoppingCartTotal={this.state.getShoppingCartTotal} getTotalItemsInBasket={this.state.numberOfItemCount}/>
+          <ShoppingBasketHeader total={this.state.total} items={this.state.numberOfItems}/>
           <ShoppingBasketExpandButton />
           <ShoppingBasketDetails checkVoucherCode={this.checkVoucherCode}/>
           <StockItemsList addItemToBasket={this.addItemToBasket} removeItemFromBasket={this.removeItemFromBasket} stock={this.state.stockData} getNumberOfItemInBasket={this.getNumberOfItemInBasket}/>

@@ -22,10 +22,7 @@ var StockItemsList = function(props){
   })    
   return(
     <div className= 'row'>
-    StockItemsList:
-    <div className= 'row'>
     {stockNodes}
-    </div>
     </div>
     )
 }

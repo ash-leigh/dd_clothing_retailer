@@ -3,7 +3,7 @@ var ShoppingBasketDetails = require('./ShoppingBasketDetails');
 
 var ShoppingBasketExpandButton = React.createClass({
   getInitialState: function(){
-    return {clicked: false, className: 'shopping-cart-not-clicked'}
+    return {clicked: true, className: 'shopping-cart-not-clicked'}
   },
 
   handleClick: function(){

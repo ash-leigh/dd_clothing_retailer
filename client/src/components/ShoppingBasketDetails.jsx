@@ -5,7 +5,6 @@ var VoucherForm = require('./VoucherForm');
 var ShoppingBasketDetails = function(props){
   return(
     <div className= {props.class}>
-      ShoppingBasketDetails:
       <div className='row'>
         <ShoppingBasketItemsList shoppingCart={props.shoppingCart} removeItemFromBasket={props.removeItemFromBasket}/>
       </div>

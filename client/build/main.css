@@ -17,7 +17,7 @@
 
 [class*="col-"] {
  float: left;
- padding: 0.01em;
+ padding: 0.01%;
 }
 
 /*STRUCTURE BORDER*/
@@ -30,7 +30,7 @@
 .row::after {
   content: "";
   clear: both;
-  display: block;
+  display: table;
 }
 /* END OF GRID SETUP */
 
@@ -38,6 +38,20 @@ body{
   align-content: center;
   padding: 0;
   margin: 0;
+}
+
+.shopping-cart-header{
+  text-align: left;
+  font-family: 'Source Serif Pro', serif;
+  font-weight: 700;
+  font-size: 300%
+}
+
+.shopping-cart-total{
+  text-align: right;
+  font-family: 'Source Serif Pro', serif;
+  font-weight: 400;
+  font-size: 50%
 }
 
 .shopping-cart-clicked{

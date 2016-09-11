@@ -21609,7 +21609,7 @@
 	  return React.createElement(
 	    'div',
 	    { className: 'row' },
-	    React.createElement('img', { src: '{require(../../build/images/dd_retail_logo.png)}' })
+	    'Deloitte. retail'
 	  );
 	};
 	
@@ -21626,17 +21626,27 @@
 	var ShoppingBasketHeader = function ShoppingBasketHeader(props) {
 	  return React.createElement(
 	    'div',
-	    { className: 'row' },
-	    'Shopping Basket',
+	    { className: 'row shopping-cart-header' },
 	    React.createElement(
 	      'div',
-	      null,
-	      props.total
+	      { className: 'col-6' },
+	      'Basket'
 	    ),
 	    React.createElement(
 	      'div',
-	      null,
-	      props.items
+	      { className: 'col-6 shopping-cart-total' },
+	      React.createElement(
+	        'div',
+	        null,
+	        'Items: ',
+	        props.items
+	      ),
+	      React.createElement(
+	        'div',
+	        null,
+	        'Total: £ ',
+	        props.total
+	      )
 	    )
 	  );
 	};
@@ -21656,7 +21666,7 @@
 	  displayName: 'ShoppingBasketExpandButton',
 	
 	  getInitialState: function getInitialState() {
-	    return { clicked: false, className: 'shopping-cart-not-clicked' };
+	    return { clicked: true, className: 'shopping-cart-not-clicked' };
 	  },
 	
 	  handleClick: function handleClick() {
@@ -21695,7 +21705,6 @@
 	  return React.createElement(
 	    'div',
 	    { className: props.class },
-	    'ShoppingBasketDetails:',
 	    React.createElement(
 	      'div',
 	      { className: 'row' },
@@ -21836,12 +21845,7 @@
 	  return React.createElement(
 	    'div',
 	    { className: 'row' },
-	    'StockItemsList:',
-	    React.createElement(
-	      'div',
-	      { className: 'row' },
-	      stockNodes
-	    )
+	    stockNodes
 	  );
 	};
 	
@@ -38996,9 +39000,9 @@
 	      'div',
 	      { className: 'row' },
 	      this.props.description,
-	      ', ',
+	      ' ',
 	      this.props.retailPrice,
-	      ', ',
+	      ' ',
 	      this.props.salePrice,
 	      React.createElement(
 	        'button',

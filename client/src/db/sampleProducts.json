@@ -6,7 +6,8 @@
     "category": "Footwear",
     "retailPrice": 99.00,
     "salePrice": null,
-    "stockQuantity": 5
+    "stockQuantity": 5,
+    "url": "https://bec2df9eb90bb6604cfc-660d71a7a33bc04488a7427f5fddcedf.ssl.cf3.rackcdn.com/uploads/product_image/photo/56e037eeec6046606b000246/large_heeled-court-shoes-spylovebuy-nf017-black-patent-mod.jpg"
   },
   { "id": 1,
     "description": "Suede Shoes",
@@ -15,7 +16,8 @@
     "category": "Footwear",
     "retailPrice": 42.00,
     "salePrice": null,
-    "stockQuantity": 4
+    "stockQuantity": 4,
+    "url": "https://www.bellsshoes.co.uk/images/products/1398266973-09689500.jpg"
   },
   { "id": 2,
     "description": "Leather Driver Saddle Loafers",
@@ -24,7 +26,8 @@
     "category": "Footwear",
     "retailPrice": 34.00,
     "salePrice": null,
-    "stockQuantity": 12
+    "stockQuantity": 12,
+    "url": "https://www.gentlemansgazette.com/wp-content/uploads/2014/05/Alden-Tassel-Loafer.jpg"
   },
   { "id": 3,
     "description": "Flip Flops",
@@ -33,7 +36,8 @@
     "category": "Footwear",
     "retailPrice": 19.00,
     "salePrice": null,
-    "stockQuantity": 6
+    "stockQuantity": 6,
+    "url": "http://www.travelodgederry.co.uk/images/large/vans/admhXD2XoF_LRG.jpg"
   },
   { "id": 4,
     "description": "Flip Flops",
@@ -42,7 +46,8 @@
     "category": "Footwear",
     "retailPrice": 19.00,
     "salePrice": null,
-    "stockQuantity": 0
+    "stockQuantity": 0,
+    "url": "http://images.asos-media.com/inv/media/3/3/5/1/6331533/blue/image1xxl.jpg"
   },
   { "id": 5,
     "description": "Gold Button Cardigan",
@@ -51,7 +56,8 @@
     "category": "Casualwear",
     "retailPrice": 167.00,
     "salePrice": null,
-    "stockQuantity": 6
+    "stockQuantity": 6,
+    "https://s-media-cache-ak0.pinimg.com/564x/bc/3b/6f/bc3b6fa2e5672c8de48feb1e1181f5b0.jpg"
   },
   { "id": 6,
     "description": "Cotton Shorts",
@@ -60,7 +66,8 @@
     "category": "Casualwear",
     "retailPrice": 30.00,
     "salePrice": null,
-    "stockQuantity": 5
+    "stockQuantity": 5,
+    "url": "http://images.kaleidoscope.co.uk/is/image/OttoUK/466w/smart-button-detail-shorts~77B116FRSP.jpg"
   },
   { "id": 7,
     "description": "Fine Stripe Short Sleeve Shirt",
@@ -69,7 +76,8 @@
     "category": "Casualwear",
     "retailPrice": 49.99,
     "salePrice": null,
-    "stockQuantity": 9
+    "stockQuantity": 9,
+    "url": "https://s-media-cache-ak0.pinimg.com/564x/28/96/37/289637cceb05964a02b3e2b8ea4b8d61.jpg"
   },
   { "id": 8,
     "description": "Fine Stripe Short Sleeve Shirt",
@@ -78,7 +86,8 @@
     "category": "Casualwear",
     "retailPrice": 49.99,
     "salePrice": 39.99,
-    "stockQuantity": 3
+    "stockQuantity": 3,
+    "url": "https://cdn.lookastic.co.uk/looks/white-geometric-short-sleeve-shirt-green-chinos-black-leather-sandals-large-2420.jpg"
   },
   { "id": 9,
     "description": "Sharkskin Waistcoat",
@@ -87,7 +96,8 @@
     "category": "Formalwear",
     "retailPrice": 75.00,
     "salePrice": null,
-    "stockQuantity": 2
+    "stockQuantity": 2,
+    "url": "http://articlesofstyle.com/wp-content/uploads/2014/04/0301.jpg"
   },
   { "id": 10,
     "description": "Lightweight Patch Pocket Blazer",
@@ -96,16 +106,18 @@
     "category": "Formalwear",
     "retailPrice": 175.50,
     "salePrice": null,
-    "stockQuantity": 1
+    "stockQuantity": 1,
+    "url": "http://hespokestyle.com/wp-content/uploads/2016/01/mens-brown-houndstooth-suit-jacket-with-blue-striped-tie-shirt-outfit-idea-business-peak-lapel-patch-pockets.jpg"
   },
   { "id": 11,
     "description": "Bird Print Dress",
     "colour": "Black",
-    "department": "Mens",
+    "department": "Womens",
     "category": "Formalwear",
     "retailPrice": 270.00,
     "salePrice": null,
-    "stockQuantity": 10
+    "stockQuantity": 10,
+    "url": "https://s-media-cache-ak0.pinimg.com/736x/c7/69/47/c76947bb3f3754120dc04aab4a47e478.jpg"
   },
   { "id": 12,
     "description": "Mid Twist Cut-Out Dress",
@@ -114,7 +126,8 @@
     "category": "Formalwear",
     "retailPrice": 540.00,
     "salePrice": null,
-    "stockQuantity": 5
+    "stockQuantity": 5,
+    "url": "http://1.bp.blogspot.com/-G4v5vyJRIpg/VO8cfl6eZnI/AAAAAAAATxs/_3aEGOORVXU/s1600/0160100002_1_400000.jpg"
   }
 
 ]

@@ -5,7 +5,7 @@ var ShoppingBasketItemsList = function(props){
   var itemNodes = props.shoppingCart.map(function(item){
     return (
       <ShoppingBasketItem
-      key= {item.stockQuantity + '' +item.id} 
+      key= {item.stockQuantity + '_' + item.id} 
       id={item.id}
       description={item.description} 
       colour= {item.colour}

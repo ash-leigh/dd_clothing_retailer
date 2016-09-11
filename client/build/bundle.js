@@ -21723,7 +21723,7 @@
 	var ShoppingBasketItemsList = function ShoppingBasketItemsList(props) {
 	  var itemNodes = props.shoppingCart.map(function (item) {
 	    return React.createElement(ShoppingBasketItem, {
-	      key: item.stockQuantity + '' + item.id,
+	      key: item.stockQuantity + '_' + item.id,
 	      id: item.id,
 	      description: item.description,
 	      colour: item.colour,
@@ -22067,10 +22067,12 @@
 	        this.items.splice(i, 1);
 	      }
 	    }
-	    if (removedItem.salePrice) {
-	      this.total -= removedItem.salePrice;
-	    } else {
-	      this.total -= removedItem.retailPrice;
+	    if (this.total > 0) {
+	      if (removedItem.salePrice) {
+	        this.total -= removedItem.salePrice;
+	      } else {
+	        this.total -= removedItem.retailPrice;
+	      }
 	    }
 	  },
 	

@@ -28,11 +28,13 @@ ShoppingCart.prototype = {
         this.items.splice(i, 1);
       }
     }
-    if(removedItem.salePrice){
-      this.total -= removedItem.salePrice;
-    }
-    else{
-      this.total -= removedItem.retailPrice;
+    if(this.total > 0){
+      if(removedItem.salePrice){
+        this.total -= removedItem.salePrice;
+      }
+      else{
+        this.total -= removedItem.retailPrice;
+      }
     }
   },
 

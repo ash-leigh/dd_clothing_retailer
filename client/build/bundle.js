@@ -21553,8 +21553,14 @@
 	      }
 	    }
 	
-	    if (shoppingCart.checkVoucherCode(code, this.state.voucherData)) {
-	      shoppingCart.applyVoucher(code, this.state.voucherData);
+	    var voucherCheck = shoppingCart.checkVoucherCode(code, this.state.voucherData);
+	
+	    if (voucherCheck) {
+	      if (shoppingCart.checkBasketEligibleForVoucher(voucherCheck)) {
+	        shoppingCart.applyVoucher(code, this.state.voucherData);
+	      } else {
+	        this.setState({ errorMessage: shoppingCart.basketErrorMessage() });
+	      }
 	    } else {
 	      this.setState({ errorMessage: shoppingCart.voucherErrorMessage() });
 	    }
@@ -22046,7 +22052,7 @@
 	  checkVoucherCode: function checkVoucherCode(code, vouchers) {
 	    var check = false;
 	    _.forEach(vouchers, function (voucher) {
-	      if (voucher.code === code) check = true;
+	      if (voucher.code === code) check = voucher;
 	    });
 	    return check;
 	  },
@@ -22059,8 +22065,11 @@
 	    return this.checkItemsEligibleForVoucher(voucher) && this.checkTotalEligibleForVoucher(voucher);
 	  },
 	
+	  basketErrorMessage: function basketErrorMessage() {
+	    return 'Sorry, the items in your besket are not eligible for this voucher';
+	  },
+	
 	  applyVoucher: function applyVoucher(code, vouchers) {
-	    console.log('applyVoucher entered');
 	    _.forEach(vouchers, function (voucher) {
 	      if (voucher.code === code) {
 	        this.applyVoucherToTotal(voucher);
@@ -22083,7 +22092,7 @@
 	  },
 	
 	  applyVoucherToTotal: function applyVoucherToTotal(voucher) {
-	    if (this.checkItemsEligibleForVoucher(voucher) && this.checkTotalEligibleForVoucher(voucher)) {
+	    if (this.checkBasketEligibleForVoucher(voucher)) {
 	      this.total -= voucher.discount;
 	    }
 	  }

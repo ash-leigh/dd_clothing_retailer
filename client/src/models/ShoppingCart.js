@@ -49,7 +49,7 @@ ShoppingCart.prototype = {
     var check = false;
     _.forEach(vouchers, function(voucher){
       if(voucher.code === code)
-        check = true;
+        check = voucher;
     })
     return check;
   },
@@ -62,8 +62,11 @@ ShoppingCart.prototype = {
     return (this.checkItemsEligibleForVoucher(voucher) && this.checkTotalEligibleForVoucher(voucher))
   },
 
+  basketErrorMessage: function(){
+    return 'Sorry, the items in your besket are not eligible for this voucher';
+  },
+
   applyVoucher: function(code, vouchers){
-    console.log('applyVoucher entered')
     _.forEach(vouchers, function(voucher){
       if(voucher.code === code){
         this.applyVoucherToTotal(voucher);
@@ -86,7 +89,7 @@ ShoppingCart.prototype = {
   },
 
   applyVoucherToTotal: function(voucher){
-    if(this.checkItemsEligibleForVoucher(voucher) && this.checkTotalEligibleForVoucher(voucher)){
+    if(this.checkBasketEligibleForVoucher(voucher)){
       this.total -= voucher.discount
     }
   }

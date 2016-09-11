@@ -97,7 +97,7 @@ var ShopBox = React.createClass({
         <div className='col-10'>
           <ShopHeader />
           <ShoppingBasketHeader total={this.state.total} items={this.state.numberOfItems}/>
-          <ShoppingBasketExpandButton handleVoucherClick={this.handleVoucherClick} errorMessage={this.state.errorMessage} shoppingCart = {this.state.shoppingCart}/>
+          <ShoppingBasketExpandButton handleVoucherClick={this.handleVoucherClick} errorMessage={this.state.errorMessage} shoppingCart = {this.state.shoppingCart} removeItemFromBasket={this.removeItemFromBasket}/>
           <StockItemsList addItemToBasket={this.addItemToBasket} removeItemFromBasket={this.removeItemFromBasket} stock={this.state.stockData} getNumberOfItemInBasket={this.getNumberOfItemInBasket}/>
         </div>
         <div className='col-1'></div>

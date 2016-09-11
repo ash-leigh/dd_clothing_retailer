@@ -21579,7 +21579,7 @@
 	        { className: 'col-10' },
 	        React.createElement(ShopHeader, null),
 	        React.createElement(ShoppingBasketHeader, { total: this.state.total, items: this.state.numberOfItems }),
-	        React.createElement(ShoppingBasketExpandButton, { handleVoucherClick: this.handleVoucherClick, errorMessage: this.state.errorMessage, shoppingCart: this.state.shoppingCart }),
+	        React.createElement(ShoppingBasketExpandButton, { handleVoucherClick: this.handleVoucherClick, errorMessage: this.state.errorMessage, shoppingCart: this.state.shoppingCart, removeItemFromBasket: this.removeItemFromBasket }),
 	        React.createElement(StockItemsList, { addItemToBasket: this.addItemToBasket, removeItemFromBasket: this.removeItemFromBasket, stock: this.state.stockData, getNumberOfItemInBasket: this.getNumberOfItemInBasket })
 	      ),
 	      React.createElement('div', { className: 'col-1' })
@@ -21666,7 +21666,7 @@
 	      'div',
 	      null,
 	      React.createElement('div', { className: 'row', onClick: this.handleClick }),
-	      React.createElement(ShoppingBasketDetails, { 'class': this.state.className, handleVoucherClick: this.props.handleVoucherClick, errorMessage: this.props.errorMessage, shoppingCart: this.props.shoppingCart })
+	      React.createElement(ShoppingBasketDetails, { 'class': this.state.className, handleVoucherClick: this.props.handleVoucherClick, errorMessage: this.props.errorMessage, shoppingCart: this.props.shoppingCart, removeItemFromBasket: this.props.removeItemFromBasket })
 	    );
 	  }
 	
@@ -21692,7 +21692,7 @@
 	    React.createElement(
 	      'div',
 	      { className: 'row' },
-	      React.createElement(ShoppingBasketItemsList, { shoppingCart: props.shoppingCart })
+	      React.createElement(ShoppingBasketItemsList, { shoppingCart: props.shoppingCart, removeItemFromBasket: props.removeItemFromBasket })
 	    ),
 	    React.createElement(
 	      'div',
@@ -21719,12 +21719,17 @@
 	
 	  render: function render() {
 	    var itemNodes = this.props.shoppingCart.map(function (item) {
-	      return React.createElement(
-	        'div',
-	        { className: 'row' },
-	        React.createElement(ShoppingBasketItem, { key: item.id, description: item.description, retailPrice: item.retailPrice, salePrice: item.salePrice })
-	      );
-	    });
+	      return React.createElement(ShoppingBasketItem, {
+	        key: item.id,
+	        id: item.id,
+	        description: item.description,
+	        colour: item.colour,
+	        department: item.department,
+	        category: item.category,
+	        retailPrice: item.retailPrice,
+	        salePrice: item.salePrice,
+	        removeItemFromBasket: this.props.removeItemFromBasket });
+	    }.bind(this));
 	
 	    return React.createElement(
 	      'div',
@@ -21743,18 +21748,43 @@
 	'use strict';
 	
 	var React = __webpack_require__(1);
+	var StockItem = __webpack_require__(185);
 	
-	var ShoppingBasketItem = function ShoppingBasketItem(props) {
-	  return React.createElement(
-	    'div',
-	    null,
-	    props.description,
-	    ', ',
-	    props.retailPrice,
-	    ', ',
-	    props.salePrice
-	  );
-	};
+	var ShoppingBasketItem = React.createClass({
+	  displayName: 'ShoppingBasketItem',
+	
+	  handleClick: function handleClick() {
+	    var selectedItem = new StockItem({
+	      id: this.props.id,
+	      description: this.props.description,
+	      colour: this.props.colour,
+	      department: this.props.department,
+	      category: this.props.category,
+	      retailPrice: this.props.retailPrice,
+	      salePrice: this.props.salePrice,
+	      stockQuantity: this.props.stockQuantity
+	    });
+	    this.props.removeItemFromBasket(selectedItem);
+	  },
+	
+	  render: function render() {
+	    return React.createElement(
+	      'div',
+	      { className: 'row' },
+	      this.props.description,
+	      ', ',
+	      this.props.retailPrice,
+	      ', ',
+	      this.props.salePrice,
+	      React.createElement(
+	        'button',
+	        { onClick: this.handleClick },
+	        'X'
+	      )
+	    );
+	  }
+	
+	});
 	
 	module.exports = ShoppingBasketItem;
 
@@ -21937,7 +21967,6 @@
 	
 	
 	  handleItemClick: function handleItemClick() {
-	    console.log('handle click');
 	    var selectedItem = new StockItem({
 	      id: this.props.stockItem.id,
 	      description: this.props.stockItem.description,
@@ -21948,7 +21977,6 @@
 	      salePrice: this.props.stockItem.salePrice,
 	      stockQuantity: this.props.stockItem.stockQuantity
 	    });
-	    console.log(selectedItem);
 	    if (this.props.display === '+') {
 	      this.props.addItemToBasket(selectedItem);
 	    } else {

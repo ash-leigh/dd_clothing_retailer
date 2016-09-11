@@ -7,7 +7,7 @@ var ShoppingBasketDetails = function(props){
     <div className= {props.class}>
       ShoppingBasketDetails:
       <div className='row'>
-        <ShoppingBasketItemsList shoppingCart={props.shoppingCart}/>
+        <ShoppingBasketItemsList shoppingCart={props.shoppingCart} removeItemFromBasket={props.removeItemFromBasket}/>
       </div>
       <div className='row'>
         <VoucherForm handleVoucherClick={props.handleVoucherClick} errorMessage={props.errorMessage}/>

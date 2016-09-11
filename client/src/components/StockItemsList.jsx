@@ -2,11 +2,10 @@ var React = require('react');
 var StockItem = require('./StockItem');
 
 var StockItemsList = function(props){
-    
   var stockNodes = props.stock.map(function(item){
     return(
       <StockItem 
-      key= {item.id} 
+      key= {item.stockQuantity + '_' + item.id}
       id= {item.id} 
       description= {item.description} 
       colour= {item.colour}
@@ -19,16 +18,17 @@ var StockItemsList = function(props){
       removeItemFromBasket={props.removeItemFromBasket}
       getNumberOfItemInBasket={props.getNumberOfItemInBasket}
       />
-    )
+      )
   })    
   return(
     <div className= 'row'>
-      StockItemsList:
-      <div className= 'row'>
-        {stockNodes}
-      </div>
+    StockItemsList:
+    <div className= 'row'>
+    {stockNodes}
     </div>
-  )
+    </div>
+    )
 }
+
 
 module.exports = StockItemsList;

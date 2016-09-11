@@ -1,30 +1,27 @@
 var React = require('react');
 var ShoppingBasketItem = require('./ShoppingBasketItem');
 
-var ShoppingBasketItemsList = React.createClass({
-
-  render: function(){
-    var itemNodes = this.props.shoppingCart.map(function(item){
-      return (
-        <ShoppingBasketItem 
-        key={item.id} 
-        id={item.id}
-        description={item.description} 
-        colour= {item.colour}
-        department= {item.department}
-        category= {item.category}
-        retailPrice={item.retailPrice} 
-        salePrice={item.salePrice} 
-        removeItemFromBasket={this.props.removeItemFromBasket}/>
-      )
-    }.bind(this))
-
+var ShoppingBasketItemsList = function(props){
+  var itemNodes = props.shoppingCart.map(function(item){
     return (
-      <div className='row'>
-        {itemNodes}
-      </div>
+      <ShoppingBasketItem
+      key= {item.stockQuantity + '' +item.id} 
+      id={item.id}
+      description={item.description} 
+      colour= {item.colour}
+      department= {item.department}
+      category= {item.category}
+      retailPrice={item.retailPrice} 
+      salePrice={item.salePrice} 
+      removeItemFromBasket={props.removeItemFromBasket}/>
     )
-  }
-})
+  })
+
+  return (
+    <div className='row'>
+    {itemNodes}
+    </div>
+  )
+}
 
 module.exports = ShoppingBasketItemsList;

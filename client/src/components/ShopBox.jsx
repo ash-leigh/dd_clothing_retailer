@@ -5,6 +5,7 @@ var ShoppingBasketExpandButton = require('./ShoppingBasketExpandButton');
 var StockItemsList = require('./StockItemsList');
 
 var ShoppingCart = require('../models/ShoppingCart');
+var Stock = require('../models/Stock');
 var StockItem = require('../models/StockItem');
 var Voucher = require('../models/Voucher');
 
@@ -23,12 +24,18 @@ var ShopBox = React.createClass({
   },
 
   addItemToBasket: function(selectedItem){
+    var stock = new Stock(this.state.stockData);
+    stock.sellItem(selectedItem);
+    this.setState({stockData: stock.items})
     var shoppingCart = this.populateShoppingCart();
     shoppingCart.addItem(selectedItem);
     this.setState({shoppingCart: shoppingCart.items, total: shoppingCart.total, numberOfItems: shoppingCart.items.length})
   },
 
   removeItemFromBasket: function(removedItem){
+    var stock = new Stock(this.state.stockData);
+    stock.returnItem(removedItem);
+    this.setState({stockData: stock.items})
     var shoppingCart = this.populateShoppingCart();
     shoppingCart.removeItem(removedItem);
     this.setState({shoppingCart: shoppingCart.items, total: shoppingCart.total, numberOfItems: shoppingCart.items.length})

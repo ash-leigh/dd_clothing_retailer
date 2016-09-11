@@ -32,7 +32,7 @@ Stock.prototype = {
   sellItem: function(soldItem){
     _.forEach(this.items, function(item){
       if(item.id === soldItem.id){
-        item.stockQuantity -= 1;
+        item.stockQuantity --;
       }
     })
   },
@@ -40,31 +40,10 @@ Stock.prototype = {
   returnItem: function(returnedItem){
     _.forEach(this.items, function(item){
       if(item.id === returnedItem.id){
-        item.stockQuantity += 1;
+        item.stockQuantity ++;
       }
     })
   }
-
-//   getItems: function(){
-//     var request = new XMLHttpRequest();
-//     request.open('GET', 'http://localhost:3000/stock');
-//     request.onload = function(){
-//       if(request.status === 200){
-//         var stockData = JSON.parse(request.responseText).map(function(item){
-//           new StockItem({
-//             description: item.description, 
-//             colour: item.colour, 
-//             department: item.department,
-//             category: item.category,
-//             retailPrice: item.retailPrice,
-//             salePrice: item.salePrice,
-//             stockQuantity: item.stockQuantity
-//           })
-//         })
-//         this.items = stockData;
-//       }
-//     }
-//   }
 
 }
 

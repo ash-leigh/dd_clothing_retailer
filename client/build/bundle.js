@@ -21435,11 +21435,12 @@
 	var ShopHeader = __webpack_require__(173);
 	var ShoppingBasketHeader = __webpack_require__(174);
 	var ShoppingBasketExpandButton = __webpack_require__(175);
-	var StockItemsList = __webpack_require__(182);
+	var StockItemsList = __webpack_require__(180);
 	
-	var ShoppingCart = __webpack_require__(187);
-	var StockItem = __webpack_require__(185);
-	var Voucher = __webpack_require__(188);
+	var ShoppingCart = __webpack_require__(185);
+	var Stock = __webpack_require__(189);
+	var StockItem = __webpack_require__(183);
+	var Voucher = __webpack_require__(186);
 	
 	var ShopBox = React.createClass({
 	  displayName: 'ShopBox',
@@ -21480,12 +21481,18 @@
 	  },
 	
 	  addItemToBasket: function addItemToBasket(selectedItem) {
+	    var stock = new Stock(this.state.stockData);
+	    stock.sellItem(selectedItem);
+	    this.setState({ stockData: stock.items });
 	    var shoppingCart = this.populateShoppingCart();
 	    shoppingCart.addItem(selectedItem);
 	    this.setState({ shoppingCart: shoppingCart.items, total: shoppingCart.total, numberOfItems: shoppingCart.items.length });
 	  },
 	
 	  removeItemFromBasket: function removeItemFromBasket(removedItem) {
+	    var stock = new Stock(this.state.stockData);
+	    stock.returnItem(removedItem);
+	    this.setState({ stockData: stock.items });
 	    var shoppingCart = this.populateShoppingCart();
 	    shoppingCart.removeItem(removedItem);
 	    this.setState({ shoppingCart: shoppingCart.items, total: shoppingCart.total, numberOfItems: shoppingCart.items.length });
@@ -21682,7 +21689,7 @@
 	
 	var React = __webpack_require__(1);
 	var ShoppingBasketItemsList = __webpack_require__(177);
-	var VoucherForm = __webpack_require__(179);
+	var VoucherForm = __webpack_require__(178);
 	
 	var ShoppingBasketDetails = function ShoppingBasketDetails(props) {
 	  return React.createElement(
@@ -21711,33 +21718,28 @@
 	'use strict';
 	
 	var React = __webpack_require__(1);
-	var ShoppingBasketItem = __webpack_require__(178);
+	var ShoppingBasketItem = __webpack_require__(190);
 	
-	var ShoppingBasketItemsList = React.createClass({
-	  displayName: 'ShoppingBasketItemsList',
+	var ShoppingBasketItemsList = function ShoppingBasketItemsList(props) {
+	  var itemNodes = props.shoppingCart.map(function (item) {
+	    return React.createElement(ShoppingBasketItem, {
+	      key: item.stockQuantity + '' + item.id,
+	      id: item.id,
+	      description: item.description,
+	      colour: item.colour,
+	      department: item.department,
+	      category: item.category,
+	      retailPrice: item.retailPrice,
+	      salePrice: item.salePrice,
+	      removeItemFromBasket: props.removeItemFromBasket });
+	  });
 	
-	
-	  render: function render() {
-	    var itemNodes = this.props.shoppingCart.map(function (item) {
-	      return React.createElement(ShoppingBasketItem, {
-	        key: item.id,
-	        id: item.id,
-	        description: item.description,
-	        colour: item.colour,
-	        department: item.department,
-	        category: item.category,
-	        retailPrice: item.retailPrice,
-	        salePrice: item.salePrice,
-	        removeItemFromBasket: this.props.removeItemFromBasket });
-	    }.bind(this));
-	
-	    return React.createElement(
-	      'div',
-	      { className: 'row' },
-	      itemNodes
-	    );
-	  }
-	});
+	  return React.createElement(
+	    'div',
+	    { className: 'row' },
+	    itemNodes
+	  );
+	};
 	
 	module.exports = ShoppingBasketItemsList;
 
@@ -21748,54 +21750,7 @@
 	'use strict';
 	
 	var React = __webpack_require__(1);
-	var StockItem = __webpack_require__(185);
-	
-	var ShoppingBasketItem = React.createClass({
-	  displayName: 'ShoppingBasketItem',
-	
-	  handleClick: function handleClick() {
-	    var selectedItem = new StockItem({
-	      id: this.props.id,
-	      description: this.props.description,
-	      colour: this.props.colour,
-	      department: this.props.department,
-	      category: this.props.category,
-	      retailPrice: this.props.retailPrice,
-	      salePrice: this.props.salePrice,
-	      stockQuantity: this.props.stockQuantity
-	    });
-	    this.props.removeItemFromBasket(selectedItem);
-	  },
-	
-	  render: function render() {
-	    return React.createElement(
-	      'div',
-	      { className: 'row' },
-	      this.props.description,
-	      ', ',
-	      this.props.retailPrice,
-	      ', ',
-	      this.props.salePrice,
-	      React.createElement(
-	        'button',
-	        { onClick: this.handleClick },
-	        'X'
-	      )
-	    );
-	  }
-	
-	});
-	
-	module.exports = ShoppingBasketItem;
-
-/***/ },
-/* 179 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var React = __webpack_require__(1);
-	var VoucherError = __webpack_require__(191);
+	var VoucherError = __webpack_require__(179);
 	
 	var VoucherForm = React.createClass({
 	  displayName: 'VoucherForm',
@@ -21835,21 +21790,36 @@
 	module.exports = VoucherForm;
 
 /***/ },
-/* 180 */,
-/* 181 */,
-/* 182 */
+/* 179 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var React = __webpack_require__(1);
-	var StockItem = __webpack_require__(183);
+	
+	var VoucherError = function VoucherError(props) {
+	  return React.createElement(
+	    'div',
+	    { className: 'voucher-error-code' },
+	    props.errorMessage
+	  );
+	};
+	
+	module.exports = VoucherError;
+
+/***/ },
+/* 180 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var React = __webpack_require__(1);
+	var StockItem = __webpack_require__(181);
 	
 	var StockItemsList = function StockItemsList(props) {
-	
 	  var stockNodes = props.stock.map(function (item) {
 	    return React.createElement(StockItem, {
-	      key: item.id,
+	      key: item.stockQuantity + '_' + item.id,
 	      id: item.id,
 	      description: item.description,
 	      colour: item.colour,
@@ -21878,101 +21848,108 @@
 	module.exports = StockItemsList;
 
 /***/ },
-/* 183 */
+/* 181 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var React = __webpack_require__(1);
-	var EditBasketButton = __webpack_require__(184);
-	var ItemsInBasketCount = __webpack_require__(186);
+	var EditBasketButton = __webpack_require__(182);
+	var ItemsInBasketCount = __webpack_require__(184);
 	
-	var StockItem = React.createClass({
-	  displayName: 'StockItem',
+	var StockItem = function StockItem(props) {
 	
-	
-	  getInitialState: function getInitialState() {
-	    return {
-	      stockItem: {
-	        id: this.props.id,
-	        description: this.props.description,
-	        colour: this.props.colour,
-	        department: this.props.department,
-	        category: this.props.category,
-	        retailPrice: this.props.retailPrice,
-	        salePrice: this.props.salePrice,
-	        stockQuantity: this.props.stockQuantity
-	      }
-	    };
-	  },
-	
-	  render: function render() {
-	    return React.createElement(
+	  return React.createElement(
+	    'div',
+	    { className: 'col-4' },
+	    React.createElement(
 	      'div',
-	      { className: 'col-4' },
+	      { className: 'row' },
+	      props.description
+	    ),
+	    React.createElement(
+	      'div',
+	      { className: 'row' },
+	      'IMAGE'
+	    ),
+	    React.createElement(
+	      'div',
+	      { className: 'row' },
 	      React.createElement(
 	        'div',
-	        { className: 'row' },
-	        this.state.stockItem.description
+	        { className: 'col-6' },
+	        props.retailPrice
 	      ),
 	      React.createElement(
 	        'div',
-	        { className: 'row' },
-	        'IMAGE'
-	      ),
-	      React.createElement(
-	        'div',
-	        { className: 'row' },
-	        React.createElement(
-	          'div',
-	          { className: 'col-6' },
-	          this.state.stockItem.retailPrice
-	        ),
-	        React.createElement(
-	          'div',
-	          { className: 'col-6' },
-	          this.state.stockItem.salePrice
-	        )
-	      ),
-	      React.createElement(
-	        'div',
-	        { className: 'row' },
-	        React.createElement(
-	          'div',
-	          { className: 'col-4' },
-	          React.createElement(EditBasketButton, {
-	            display: '-',
-	            removeItemFromBasket: this.props.removeItemFromBasket,
-	            stockItem: this.state.stockItem })
-	        ),
-	        React.createElement(
-	          'div',
-	          { className: 'col-4' },
-	          React.createElement(ItemsInBasketCount, { getNumberOfItemInBasket: this.props.getNumberOfItemInBasket, stockItem: this.state.stockItem })
-	        ),
-	        React.createElement(
-	          'div',
-	          { className: 'col-4' },
-	          React.createElement(EditBasketButton, {
-	            display: '+',
-	            addItemToBasket: this.props.addItemToBasket,
-	            stockItem: this.state.stockItem })
-	        )
+	        { className: 'col-6' },
+	        props.salePrice
 	      )
-	    );
-	  }
-	});
+	    ),
+	    React.createElement(
+	      'div',
+	      { className: 'row' },
+	      React.createElement(
+	        'div',
+	        { className: 'col-4' },
+	        React.createElement(EditBasketButton, {
+	          display: '-',
+	          removeItemFromBasket: props.removeItemFromBasket,
+	          id: props.id,
+	          description: props.description,
+	          colour: props.colour,
+	          department: props.department,
+	          category: props.category,
+	          retailPrice: props.retailPrice,
+	          salePrice: props.salePrice,
+	          stockQuantity: props.stockQuantity
+	        })
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'col-4' },
+	        React.createElement(ItemsInBasketCount, {
+	          getNumberOfItemInBasket: props.getNumberOfItemInBasket,
+	          id: props.id,
+	          description: props.description,
+	          colour: props.colour,
+	          department: props.department,
+	          category: props.category,
+	          retailPrice: props.retailPrice,
+	          salePrice: props.salePrice,
+	          stockQuantity: props.stockQuantity
+	        })
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'col-4' },
+	        React.createElement(EditBasketButton, {
+	          display: '+',
+	          addItemToBasket: props.addItemToBasket,
+	          id: props.id,
+	          description: props.description,
+	          colour: props.colour,
+	          department: props.department,
+	          category: props.category,
+	          retailPrice: props.retailPrice,
+	          salePrice: props.salePrice,
+	          stockQuantity: props.stockQuantity
+	        })
+	      )
+	    )
+	  );
+	};
 	
 	module.exports = StockItem;
 
 /***/ },
-/* 184 */
+/* 182 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var React = __webpack_require__(1);
-	var StockItem = __webpack_require__(185);
+	var StockItem = __webpack_require__(183);
 	
 	var EditBasketItem = React.createClass({
 	  displayName: 'EditBasketItem',
@@ -21980,14 +21957,14 @@
 	
 	  handleItemClick: function handleItemClick() {
 	    var selectedItem = new StockItem({
-	      id: this.props.stockItem.id,
-	      description: this.props.stockItem.description,
-	      colour: this.props.stockItem.colour,
-	      department: this.props.stockItem.department,
-	      category: this.props.stockItem.category,
-	      retailPrice: this.props.stockItem.retailPrice,
-	      salePrice: this.props.stockItem.salePrice,
-	      stockQuantity: this.props.stockItem.stockQuantity
+	      id: this.props.id,
+	      description: this.props.description,
+	      colour: this.props.colour,
+	      department: this.props.department,
+	      category: this.props.category,
+	      retailPrice: this.props.retailPrice,
+	      salePrice: this.props.salePrice,
+	      stockQuantity: this.props.stockQuantity
 	    });
 	    if (this.props.display === '+') {
 	      this.props.addItemToBasket(selectedItem);
@@ -22009,7 +21986,7 @@
 	module.exports = EditBasketItem;
 
 /***/ },
-/* 185 */
+/* 183 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -22028,33 +22005,44 @@
 	module.exports = StockItem;
 
 /***/ },
-/* 186 */
+/* 184 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var React = __webpack_require__(1);
+	var StockItem = __webpack_require__(183);
 	
 	var ItemsInBasketCount = function ItemsInBasketCount(props) {
+	  var stockItem = new StockItem({
+	    id: props.id,
+	    description: props.description,
+	    colour: props.colour,
+	    department: props.department,
+	    category: props.category,
+	    retailPrice: props.retailPrice,
+	    salePrice: props.salePrice,
+	    stockQuantity: props.stockQuantity
+	  });
 	  return React.createElement(
 	    'div',
 	    null,
-	    props.getNumberOfItemInBasket(props.stockItem)
+	    props.getNumberOfItemInBasket(stockItem)
 	  );
 	};
 	
 	module.exports = ItemsInBasketCount;
 
 /***/ },
-/* 187 */
+/* 185 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var ShoppingCart = __webpack_require__(187);
-	var StockItem = __webpack_require__(185);
-	var Voucher = __webpack_require__(188);
-	var _ = __webpack_require__(189);
+	var ShoppingCart = __webpack_require__(185);
+	var StockItem = __webpack_require__(183);
+	var Voucher = __webpack_require__(186);
+	var _ = __webpack_require__(187);
 	
 	var ShoppingCart = function ShoppingCart() {
 	  this.items = [], this.total = 0;
@@ -22063,11 +22051,13 @@
 	ShoppingCart.prototype = {
 	
 	  addItem: function addItem(item) {
-	    this.items.push(item);
-	    if (item.salePrice) {
-	      this.total += item.salePrice;
-	    } else {
-	      this.total += item.retailPrice;
+	    if (item.stockQuantity > 0) {
+	      this.items.push(item);
+	      if (item.salePrice) {
+	        this.total += item.salePrice;
+	      } else {
+	        this.total += item.retailPrice;
+	      }
 	    }
 	  },
 	
@@ -22125,7 +22115,6 @@
 	  checkItemsEligibleForVoucher: function checkItemsEligibleForVoucher(voucher) {
 	    var matchedItems = [];
 	    _.forEach(voucher.eligibilityCriteria, function (criteria) {
-	      console.log(criteria);
 	      matchedItems = _.filter(this.items, _.matches(criteria));
 	    }.bind(this));
 	    matchedItems = _.uniq(matchedItems);
@@ -22147,7 +22136,7 @@
 	module.exports = ShoppingCart;
 
 /***/ },
-/* 188 */
+/* 186 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -22162,7 +22151,7 @@
 	module.exports = Voucher;
 
 /***/ },
-/* 189 */
+/* 187 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(global, module) {/**
@@ -38899,10 +38888,10 @@
 	  }
 	}.call(this));
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(190)(module)))
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(188)(module)))
 
 /***/ },
-/* 190 */
+/* 188 */
 /***/ function(module, exports) {
 
 	module.exports = function(module) {
@@ -38918,22 +38907,108 @@
 
 
 /***/ },
-/* 191 */
+/* 189 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var StockItem = __webpack_require__(183);
+	var _ = __webpack_require__(187);
+	
+	var Stock = function Stock(items) {
+	  this.items = items;
+	};
+	
+	Stock.prototype = {
+	
+	  allStockCount: function allStockCount() {
+	    var count = 0;
+	    _.forEach(this.items, function (item) {
+	      count += item.stockQuantity;
+	    });
+	    return count;
+	  },
+	
+	  itemStockCount: function itemStockCount(checkItem) {
+	    var count = 0;
+	    _.forEach(this.items, function (item) {
+	      if (item.id === checkItem.id) {
+	        count += item.stockQuantity;
+	      }
+	    });
+	    return count;
+	  },
+	
+	  checkIfItemIsInStock: function checkIfItemIsInStock(item) {
+	    return item.stockQuantity > 0;
+	  },
+	
+	  sellItem: function sellItem(soldItem) {
+	    _.forEach(this.items, function (item) {
+	      if (item.id === soldItem.id) {
+	        item.stockQuantity--;
+	      }
+	    });
+	  },
+	
+	  returnItem: function returnItem(returnedItem) {
+	    _.forEach(this.items, function (item) {
+	      if (item.id === returnedItem.id) {
+	        item.stockQuantity++;
+	      }
+	    });
+	  }
+	
+	};
+	
+	module.exports = Stock;
+
+/***/ },
+/* 190 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var React = __webpack_require__(1);
+	var StockItem = __webpack_require__(183);
 	
-	var VoucherError = function VoucherError(props) {
-	  return React.createElement(
-	    'div',
-	    { className: 'voucher-error-code' },
-	    props.errorMessage
-	  );
-	};
+	var ShoppingBasketItem = React.createClass({
+	  displayName: 'ShoppingBasketItem',
 	
-	module.exports = VoucherError;
+	  handleClick: function handleClick() {
+	    var selectedItem = new StockItem({
+	      id: this.props.id,
+	      description: this.props.description,
+	      colour: this.props.colour,
+	      department: this.props.department,
+	      category: this.props.category,
+	      retailPrice: this.props.retailPrice,
+	      salePrice: this.props.salePrice,
+	      stockQuantity: this.props.stockQuantity
+	    });
+	    this.props.removeItemFromBasket(selectedItem);
+	  },
+	
+	  render: function render() {
+	    return React.createElement(
+	      'div',
+	      { className: 'row' },
+	      this.props.description,
+	      ', ',
+	      this.props.retailPrice,
+	      ', ',
+	      this.props.salePrice,
+	      React.createElement(
+	        'button',
+	        { onClick: this.handleClick },
+	        'X'
+	      )
+	    );
+	  }
+	
+	});
+	
+	module.exports = ShoppingBasketItem;
 
 /***/ }
 /******/ ]);

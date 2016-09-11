@@ -1,6 +1,5 @@
 var React = require('react');
-var InvalidVoucherCodeError = require('./InvalidVoucherCodeError');
-var InvalidBasketCodeError = require('./InvalidBasketCodeError');
+var VoucherError = require('./VoucherError');
 
 var VoucherForm = React.createClass({
 
@@ -24,8 +23,7 @@ var VoucherForm = React.createClass({
         VoucherForm:
         <input type='text' onChange={this.setVoucherCodeOnChange}></input>
         <button onClick={this.handleVoucherClick}>apply voucher</button>
-        <InvalidVoucherCodeError voucherError={this.props.voucherError} />
-        <InvalidBasketCodeError basketError={this.props.basketError}/>
+        <VoucherError errorMessage={this.props.errorMessage} />
       </div>
     )
   }

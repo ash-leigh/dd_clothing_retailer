@@ -10,7 +10,7 @@ var ShoppingBasketDetails = function(props){
         <ShoppingBasketItemsList />
       </div>
       <div className='row'>
-        <VoucherForm handleVoucherClick={props.handleVoucherClick} voucherError={props.voucherError} basketError={props.basketError}/>
+        <VoucherForm handleVoucherClick={props.handleVoucherClick} errorMessage={props.voucherError}/>
       </div>
     </div>
   )

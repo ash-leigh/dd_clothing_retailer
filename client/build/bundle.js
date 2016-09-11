@@ -21436,10 +21436,10 @@
 	var ShoppingBasketHeader = __webpack_require__(174);
 	var ShoppingBasketExpandButton = __webpack_require__(175);
 	var ShoppingBasketDetails = __webpack_require__(176);
-	var StockItemsList = __webpack_require__(180);
+	var StockItemsList = __webpack_require__(182);
 	
-	var ShoppingCart = __webpack_require__(182);
-	var StockItem = __webpack_require__(183);
+	var ShoppingCart = __webpack_require__(187);
+	var StockItem = __webpack_require__(185);
 	var Voucher = __webpack_require__(188);
 	
 	var ShopBox = React.createClass({
@@ -21447,7 +21447,7 @@
 	
 	
 	  getInitialState: function getInitialState() {
-	    return { stockData: [], shoppingCart: [], voucherData: [], total: 0, numberOfItems: 0, voucherError: '', basketError: '' };
+	    return { stockData: [], shoppingCart: [], voucherData: [], total: 0, numberOfItems: 0, errorMessage: '' };
 	  },
 	
 	  populateShoppingCart: function populateShoppingCart() {
@@ -21553,17 +21553,13 @@
 	      }
 	    }
 	
-	    if (!shoppingCart.checkVoucherCode()) {
-	      this.setState({ voucherError: 'Sorry, this is not a valid voucher code' });
+	    if (shoppingCart.checkVoucherCode(code, this.state.voucherData)) {
+	      shoppingCart.applyVoucher(code, this.state.voucherData);
+	    } else {
+	      this.setState({ errorMessage: shoppingCart.voucherErrorMessage() });
 	    }
 	
-	    this.setState({ voucherError: 'Sorry, this voucher is not valid for your basket' });
-	    // if(!shoppingCart.checkBasketEligibleForVoucher()){
-	    //   console.log('BASKET INVALID')
-	    // }
-	    // shoppingCart.applyVoucher(code, this.state.voucherData)
-	
-	    // this.setState({shoppingCart: shoppingCart.items, total: shoppingCart.total, numberOfItems: shoppingCart.items.length});
+	    this.setState({ shoppingCart: shoppingCart.items, total: shoppingCart.total, numberOfItems: shoppingCart.items.length });
 	  },
 	
 	  render: function render() {
@@ -21603,7 +21599,7 @@
 	        React.createElement(ShopHeader, null),
 	        React.createElement(ShoppingBasketHeader, { total: this.state.total, items: this.state.numberOfItems }),
 	        React.createElement(ShoppingBasketExpandButton, null),
-	        React.createElement(ShoppingBasketDetails, { handleVoucherClick: this.handleVoucherClick, voucherError: this.state.voucherError, basketError: this.state.basketError }),
+	        React.createElement(ShoppingBasketDetails, { handleVoucherClick: this.handleVoucherClick, voucherError: this.state.errorMessage }),
 	        React.createElement(StockItemsList, { addItemToBasket: this.addItemToBasket, removeItemFromBasket: this.removeItemFromBasket, stock: this.state.stockData, getNumberOfItemInBasket: this.getNumberOfItemInBasket })
 	      ),
 	      React.createElement('div', { className: 'col-1' })
@@ -21701,7 +21697,7 @@
 	    React.createElement(
 	      'div',
 	      { className: 'row' },
-	      React.createElement(VoucherForm, { handleVoucherClick: props.handleVoucherClick, voucherError: props.voucherError, basketError: props.basketError })
+	      React.createElement(VoucherForm, { handleVoucherClick: props.handleVoucherClick, errorMessage: props.voucherError })
 	    )
 	  );
 	};
@@ -21757,8 +21753,7 @@
 	'use strict';
 	
 	var React = __webpack_require__(1);
-	var InvalidVoucherCodeError = __webpack_require__(193);
-	var InvalidBasketCodeError = __webpack_require__(194);
+	var VoucherError = __webpack_require__(191);
 	
 	var VoucherForm = React.createClass({
 	  displayName: 'VoucherForm',
@@ -21789,8 +21784,7 @@
 	        { onClick: this.handleVoucherClick },
 	        'apply voucher'
 	      ),
-	      React.createElement(InvalidVoucherCodeError, { voucherError: this.props.voucherError }),
-	      React.createElement(InvalidBasketCodeError, { basketError: this.props.basketError })
+	      React.createElement(VoucherError, { errorMessage: this.props.errorMessage })
 	    );
 	  }
 	
@@ -21799,13 +21793,15 @@
 	module.exports = VoucherForm;
 
 /***/ },
-/* 180 */
+/* 180 */,
+/* 181 */,
+/* 182 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var React = __webpack_require__(1);
-	var StockItem = __webpack_require__(181);
+	var StockItem = __webpack_require__(183);
 	
 	var StockItemsList = function StockItemsList(props) {
 	
@@ -21840,14 +21836,14 @@
 	module.exports = StockItemsList;
 
 /***/ },
-/* 181 */
+/* 183 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var React = __webpack_require__(1);
-	var EditBasketButton = __webpack_require__(186);
-	var ItemsInBasketCount = __webpack_require__(187);
+	var EditBasketButton = __webpack_require__(184);
+	var ItemsInBasketCount = __webpack_require__(186);
 	
 	var StockItem = React.createClass({
 	  displayName: 'StockItem',
@@ -21916,15 +21912,97 @@
 	module.exports = StockItem;
 
 /***/ },
-/* 182 */
+/* 184 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var ShoppingCart = __webpack_require__(182);
-	var StockItem = __webpack_require__(183);
+	var React = __webpack_require__(1);
+	var StockItem = __webpack_require__(185);
+	
+	var EditBasketItem = React.createClass({
+	  displayName: 'EditBasketItem',
+	
+	
+	  handleItemClick: function handleItemClick() {
+	    console.log('handle click');
+	    var selectedItem = new StockItem({
+	      id: this.props.stockItem.id,
+	      description: this.props.stockItem.description,
+	      colour: this.props.stockItem.colour,
+	      department: this.props.stockItem.department,
+	      category: this.props.stockItem.category,
+	      retailPrice: this.props.stockItem.retailPrice,
+	      salePrice: this.props.stockItem.salePrice,
+	      stockQuantity: this.props.stockItem.stockQuantity
+	    });
+	    console.log(selectedItem);
+	    if (this.props.display === '+') {
+	      this.props.addItemToBasket(selectedItem);
+	    } else {
+	      this.props.removeItemFromBasket(selectedItem);
+	    }
+	  },
+	
+	  render: function render() {
+	    return React.createElement(
+	      'button',
+	      { onClick: this.handleItemClick },
+	      this.props.display
+	    );
+	  }
+	
+	});
+	
+	module.exports = EditBasketItem;
+
+/***/ },
+/* 185 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	var StockItem = function StockItem(params) {
+	  this.id = params.id;
+	  this.description = params.description;
+	  this.colour = params.colour;
+	  this.department = params.department;
+	  this.category = params.category;
+	  this.retailPrice = params.retailPrice;
+	  this.salePrice = params.salePrice;
+	  this.stockQuantity = params.stockQuantity;
+	};
+	
+	module.exports = StockItem;
+
+/***/ },
+/* 186 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var React = __webpack_require__(1);
+	
+	var ItemsInBasketCount = function ItemsInBasketCount(props) {
+	  return React.createElement(
+	    'div',
+	    null,
+	    props.getNumberOfItemInBasket(props.stockItem)
+	  );
+	};
+	
+	module.exports = ItemsInBasketCount;
+
+/***/ },
+/* 187 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var ShoppingCart = __webpack_require__(187);
+	var StockItem = __webpack_require__(185);
 	var Voucher = __webpack_require__(188);
-	var _ = __webpack_require__(184);
+	var _ = __webpack_require__(189);
 	
 	var ShoppingCart = function ShoppingCart() {
 	  this.items = [], this.total = 0;
@@ -21966,11 +22044,15 @@
 	  },
 	
 	  checkVoucherCode: function checkVoucherCode(code, vouchers) {
+	    var check = false;
 	    _.forEach(vouchers, function (voucher) {
-	      if (voucher.code === code) {
-	        return true;
-	      }
+	      if (voucher.code === code) check = true;
 	    });
+	    return check;
+	  },
+	
+	  voucherErrorMessage: function voucherErrorMessage() {
+	    return 'Sorry, that is not a valid voucher code';
 	  },
 	
 	  checkBasketEligibleForVoucher: function checkBasketEligibleForVoucher(voucher) {
@@ -21978,11 +22060,12 @@
 	  },
 	
 	  applyVoucher: function applyVoucher(code, vouchers) {
+	    console.log('applyVoucher entered');
 	    _.forEach(vouchers, function (voucher) {
 	      if (voucher.code === code) {
 	        this.applyVoucherToTotal(voucher);
 	      }
-	    });
+	    }.bind(this));
 	  },
 	
 	  checkItemsEligibleForVoucher: function checkItemsEligibleForVoucher(voucher) {
@@ -22010,26 +22093,22 @@
 	module.exports = ShoppingCart;
 
 /***/ },
-/* 183 */
+/* 188 */
 /***/ function(module, exports) {
 
 	"use strict";
 	
-	var StockItem = function StockItem(params) {
-	  this.id = params.id;
-	  this.description = params.description;
-	  this.colour = params.colour;
-	  this.department = params.department;
-	  this.category = params.category;
-	  this.retailPrice = params.retailPrice;
-	  this.salePrice = params.salePrice;
-	  this.stockQuantity = params.stockQuantity;
+	var Voucher = function Voucher(params) {
+	  this.code = params.code;
+	  this.discount = params.discount;
+	  this.eligibilityCriteria = params.eligibilityCriteria;
+	  this.threshold = params.threshold;
 	};
 	
-	module.exports = StockItem;
+	module.exports = Voucher;
 
 /***/ },
-/* 184 */
+/* 189 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(global, module) {/**
@@ -38766,10 +38845,10 @@
 	  }
 	}.call(this));
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(185)(module)))
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(190)(module)))
 
 /***/ },
-/* 185 */
+/* 190 */
 /***/ function(module, exports) {
 
 	module.exports = function(module) {
@@ -38785,122 +38864,22 @@
 
 
 /***/ },
-/* 186 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var React = __webpack_require__(1);
-	var StockItem = __webpack_require__(183);
-	
-	var EditBasketItem = React.createClass({
-	  displayName: 'EditBasketItem',
-	
-	
-	  handleItemClick: function handleItemClick() {
-	    console.log('handle click');
-	    var selectedItem = new StockItem({
-	      id: this.props.stockItem.id,
-	      description: this.props.stockItem.description,
-	      colour: this.props.stockItem.colour,
-	      department: this.props.stockItem.department,
-	      category: this.props.stockItem.category,
-	      retailPrice: this.props.stockItem.retailPrice,
-	      salePrice: this.props.stockItem.salePrice,
-	      stockQuantity: this.props.stockItem.stockQuantity
-	    });
-	    console.log(selectedItem);
-	    if (this.props.display === '+') {
-	      this.props.addItemToBasket(selectedItem);
-	    } else {
-	      this.props.removeItemFromBasket(selectedItem);
-	    }
-	  },
-	
-	  render: function render() {
-	    return React.createElement(
-	      'button',
-	      { onClick: this.handleItemClick },
-	      this.props.display
-	    );
-	  }
-	
-	});
-	
-	module.exports = EditBasketItem;
-
-/***/ },
-/* 187 */
+/* 191 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var React = __webpack_require__(1);
 	
-	var ItemsInBasketCount = function ItemsInBasketCount(props) {
-	  return React.createElement(
-	    'div',
-	    null,
-	    props.getNumberOfItemInBasket(props.stockItem)
-	  );
-	};
-	
-	module.exports = ItemsInBasketCount;
-
-/***/ },
-/* 188 */
-/***/ function(module, exports) {
-
-	"use strict";
-	
-	var Voucher = function Voucher(params) {
-	  this.code = params.code;
-	  this.discount = params.discount;
-	  this.eligibilityCriteria = params.eligibilityCriteria;
-	  this.threshold = params.threshold;
-	};
-	
-	module.exports = Voucher;
-
-/***/ },
-/* 189 */,
-/* 190 */,
-/* 191 */,
-/* 192 */,
-/* 193 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var React = __webpack_require__(1);
-	
-	var InvalidVoucherCodeError = function InvalidVoucherCodeError(props) {
+	var VoucherError = function VoucherError(props) {
 	  return React.createElement(
 	    'div',
 	    { className: 'voucher-error-code' },
-	    props.voucherError
+	    props.errorMessage
 	  );
 	};
 	
-	module.exports = InvalidVoucherCodeError;
-
-/***/ },
-/* 194 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var React = __webpack_require__(1);
-	
-	var InvalidBasketCodeError = function InvalidBasketCodeError() {
-	  return React.createElement(
-	    'div',
-	    { className: 'basket-error-code' },
-	    'Sorry, this voucher is not valid for your basket'
-	  );
-	};
-	
-	module.exports = InvalidBasketCodeError;
+	module.exports = VoucherError;
 
 /***/ }
 /******/ ]);

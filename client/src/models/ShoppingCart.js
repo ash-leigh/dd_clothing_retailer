@@ -46,11 +46,16 @@ ShoppingCart.prototype = {
   },
 
   checkVoucherCode: function(code, vouchers){
+    var check = false;
     _.forEach(vouchers, function(voucher){
-      if(voucher.code === code){
-        return true;
-      }
+      if(voucher.code === code)
+        check = true;
     })
+    return check;
+  },
+
+  voucherErrorMessage: function(){
+    return 'Sorry, that is not a valid voucher code';
   },
 
   checkBasketEligibleForVoucher: function(voucher){
@@ -58,11 +63,12 @@ ShoppingCart.prototype = {
   },
 
   applyVoucher: function(code, vouchers){
+    console.log('applyVoucher entered')
     _.forEach(vouchers, function(voucher){
       if(voucher.code === code){
         this.applyVoucherToTotal(voucher);
       }
-    })
+    }.bind(this))
   },
 
   checkItemsEligibleForVoucher: function(voucher){

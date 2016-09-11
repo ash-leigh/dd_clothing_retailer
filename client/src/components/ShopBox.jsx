@@ -12,7 +12,7 @@ var Voucher = require('../models/Voucher');
 var ShopBox = React.createClass({
 
   getInitialState: function() {
-    return {stockData: [], shoppingCart: [], voucherData: [], total: 0, numberOfItems: 0, voucherError: '', basketError: ''};
+    return {stockData: [], shoppingCart: [], voucherData: [], total: 0, numberOfItems: 0, errorMessage: ''};
   },
 
   populateShoppingCart: function(){
@@ -74,17 +74,14 @@ var ShopBox = React.createClass({
     for(var item of this.state.shoppingCart){
       shoppingCart.addItem(new StockItem(item));
     }
-    if(!shoppingCart.checkVoucherCode()){
-      this.setState({voucherError: 'Sorry, this is not a valid voucher code'})
+
+    if(shoppingCart.checkVoucherCode(code, this.state.voucherData)){
+      shoppingCart.applyVoucher(code, this.state.voucherData)
+    }else{
+      this.setState({errorMessage: shoppingCart.voucherErrorMessage()})
     }
 
-    this.setState({voucherError: 'Sorry, this voucher is not valid for your basket'})
-    // if(!shoppingCart.checkBasketEligibleForVoucher()){
-    //   console.log('BASKET INVALID')
-    // }
-   // shoppingCart.applyVoucher(code, this.state.voucherData)
-
-   // this.setState({shoppingCart: shoppingCart.items, total: shoppingCart.total, numberOfItems: shoppingCart.items.length});
+   this.setState({shoppingCart: shoppingCart.items, total: shoppingCart.total, numberOfItems: shoppingCart.items.length});
 
   },
 
@@ -100,7 +97,7 @@ var ShopBox = React.createClass({
           <ShopHeader />
           <ShoppingBasketHeader total={this.state.total} items={this.state.numberOfItems}/>
           <ShoppingBasketExpandButton />
-          <ShoppingBasketDetails handleVoucherClick={this.handleVoucherClick} voucherError={this.state.voucherError} basketError={this.state.basketError}/>
+          <ShoppingBasketDetails handleVoucherClick={this.handleVoucherClick} voucherError={this.state.errorMessage}/>
           <StockItemsList addItemToBasket={this.addItemToBasket} removeItemFromBasket={this.removeItemFromBasket} stock={this.state.stockData} getNumberOfItemInBasket={this.getNumberOfItemInBasket}/>
         </div>
         <div className='col-1'></div>

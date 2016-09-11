@@ -21602,7 +21602,7 @@
 	  return React.createElement(
 	    'div',
 	    { className: 'row' },
-	    '//'
+	    React.createElement('img', { src: '{require(../../build/images/dd_retail_logo.png)}' })
 	  );
 	};
 	
@@ -21923,24 +21923,36 @@
 	      React.createElement(
 	        'div',
 	        { className: 'row' },
-	        this.state.stockItem.retailPrice
+	        React.createElement(
+	          'div',
+	          { className: 'col-6' },
+	          this.state.stockItem.retailPrice
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'col-6' },
+	          this.state.stockItem.salePrice
+	        )
 	      ),
 	      React.createElement(
 	        'div',
 	        { className: 'row' },
 	        React.createElement(
 	          'div',
-	          { className: 'col-6' },
-	          this.state.stockItem.salePrice
-	        ),
-	        React.createElement(
-	          'div',
-	          { className: 'col-6' },
+	          { className: 'col-4' },
 	          React.createElement(EditBasketButton, {
 	            display: '-',
 	            removeItemFromBasket: this.props.removeItemFromBasket,
-	            stockItem: this.state.stockItem }),
-	          React.createElement(ItemsInBasketCount, { getNumberOfItemInBasket: this.props.getNumberOfItemInBasket, stockItem: this.state.stockItem }),
+	            stockItem: this.state.stockItem })
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'col-4' },
+	          React.createElement(ItemsInBasketCount, { getNumberOfItemInBasket: this.props.getNumberOfItemInBasket, stockItem: this.state.stockItem })
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'col-4' },
 	          React.createElement(EditBasketButton, {
 	            display: '+',
 	            addItemToBasket: this.props.addItemToBasket,

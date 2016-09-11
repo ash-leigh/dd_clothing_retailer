@@ -22,32 +22,43 @@ var StockItem = React.createClass({
   render: function(){
     return(
       <div className='col-4'>
+
         <div className='row'>
           {this.state.stockItem.description}
          </div>
+
          <div className='row'>
           IMAGE
          </div>
-         <div className='row'>
-         {this.state.stockItem.retailPrice}
-         </div>
+
          <div className='row'>
            <div className='col-6'>
-           {this.state.stockItem.salePrice}
+           {this.state.stockItem.retailPrice}
            </div>
            <div className='col-6'>
-             <EditBasketButton 
-             display='-'
-             removeItemFromBasket={this.props.removeItemFromBasket}
-             stockItem={this.state.stockItem}/>
-             <ItemsInBasketCount getNumberOfItemInBasket={this.props.getNumberOfItemInBasket} stockItem={this.state.stockItem}/>
-             <EditBasketButton 
-             display='+' 
-             addItemToBasket={this.props.addItemToBasket}
-             stockItem={this.state.stockItem}/>
+             {this.state.stockItem.salePrice}
            </div>
          </div>
-      </div>
+
+           <div className='row'>
+             <div className='col-4'>
+               <EditBasketButton 
+               display='-'
+               removeItemFromBasket={this.props.removeItemFromBasket}
+               stockItem={this.state.stockItem}/>
+             </div>
+             <div className='col-4'>
+               <ItemsInBasketCount getNumberOfItemInBasket={this.props.getNumberOfItemInBasket} stockItem={this.state.stockItem}/>
+             </div>
+             <div className='col-4'>
+               <EditBasketButton 
+               display='+' 
+               addItemToBasket={this.props.addItemToBasket}
+               stockItem={this.state.stockItem}/>
+             </div>
+           </div>
+
+       </div>
     )
   }
 })

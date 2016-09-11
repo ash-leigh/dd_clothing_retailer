@@ -21435,7 +21435,6 @@
 	var ShopHeader = __webpack_require__(173);
 	var ShoppingBasketHeader = __webpack_require__(174);
 	var ShoppingBasketExpandButton = __webpack_require__(175);
-	var ShoppingBasketDetails = __webpack_require__(176);
 	var StockItemsList = __webpack_require__(182);
 	
 	var ShoppingCart = __webpack_require__(187);
@@ -21580,8 +21579,7 @@
 	        { className: 'col-10' },
 	        React.createElement(ShopHeader, null),
 	        React.createElement(ShoppingBasketHeader, { total: this.state.total, items: this.state.numberOfItems }),
-	        React.createElement(ShoppingBasketExpandButton, null),
-	        React.createElement(ShoppingBasketDetails, { handleVoucherClick: this.handleVoucherClick, voucherError: this.state.errorMessage }),
+	        React.createElement(ShoppingBasketExpandButton, { handleVoucherClick: this.handleVoucherClick, errorMessage: this.state.errorMessage, shoppingCart: this.state.shoppingCart }),
 	        React.createElement(StockItemsList, { addItemToBasket: this.addItemToBasket, removeItemFromBasket: this.removeItemFromBasket, stock: this.state.stockData, getNumberOfItemInBasket: this.getNumberOfItemInBasket })
 	      ),
 	      React.createElement('div', { className: 'col-1' })
@@ -21645,14 +21643,34 @@
 	'use strict';
 	
 	var React = __webpack_require__(1);
+	var ShoppingBasketDetails = __webpack_require__(176);
 	
-	var ShoppingBasketExpandButton = function ShoppingBasketExpandButton() {
-	  return React.createElement(
-	    'div',
-	    { className: 'row' },
-	    'ShoppingBasketExpandButton'
-	  );
-	};
+	var ShoppingBasketExpandButton = React.createClass({
+	  displayName: 'ShoppingBasketExpandButton',
+	
+	  getInitialState: function getInitialState() {
+	    return { clicked: false, className: 'shopping-cart-not-clicked' };
+	  },
+	
+	  handleClick: function handleClick() {
+	    this.setState({ clicked: !this.state.clicked });
+	    if (this.state.clicked) {
+	      this.setState({ className: 'shopping-cart-clicked' });
+	    } else {
+	      this.setState({ className: 'shopping-cart-not-clicked' });
+	    }
+	  },
+	
+	  render: function render() {
+	    return React.createElement(
+	      'div',
+	      null,
+	      React.createElement('div', { className: 'row', onClick: this.handleClick }),
+	      React.createElement(ShoppingBasketDetails, { 'class': this.state.className, handleVoucherClick: this.props.handleVoucherClick, errorMessage: this.props.errorMessage, shoppingCart: this.props.shoppingCart })
+	    );
+	  }
+	
+	});
 	
 	module.exports = ShoppingBasketExpandButton;
 
@@ -21669,17 +21687,17 @@
 	var ShoppingBasketDetails = function ShoppingBasketDetails(props) {
 	  return React.createElement(
 	    'div',
-	    { className: 'row' },
+	    { className: props.class },
 	    'ShoppingBasketDetails:',
 	    React.createElement(
 	      'div',
 	      { className: 'row' },
-	      React.createElement(ShoppingBasketItemsList, null)
+	      React.createElement(ShoppingBasketItemsList, { shoppingCart: props.shoppingCart })
 	    ),
 	    React.createElement(
 	      'div',
 	      { className: 'row' },
-	      React.createElement(VoucherForm, { handleVoucherClick: props.handleVoucherClick, errorMessage: props.voucherError })
+	      React.createElement(VoucherForm, { handleVoucherClick: props.handleVoucherClick, errorMessage: props.errorMessage })
 	    )
 	  );
 	};
@@ -21695,18 +21713,26 @@
 	var React = __webpack_require__(1);
 	var ShoppingBasketItem = __webpack_require__(178);
 	
-	var ShoppingBasketItemsList = function ShoppingBasketItemsList() {
-	  return React.createElement(
-	    'div',
-	    null,
-	    'ShoppingBasketItemsList:',
-	    React.createElement(
+	var ShoppingBasketItemsList = React.createClass({
+	  displayName: 'ShoppingBasketItemsList',
+	
+	
+	  render: function render() {
+	    var itemNodes = this.props.shoppingCart.map(function (item) {
+	      return React.createElement(
+	        'div',
+	        { className: 'row' },
+	        React.createElement(ShoppingBasketItem, { key: item.id, description: item.description, retailPrice: item.retailPrice, salePrice: item.salePrice })
+	      );
+	    });
+	
+	    return React.createElement(
 	      'div',
 	      { className: 'row' },
-	      React.createElement(ShoppingBasketItem, null)
-	    )
-	  );
-	};
+	      itemNodes
+	    );
+	  }
+	});
 	
 	module.exports = ShoppingBasketItemsList;
 
@@ -21718,11 +21744,15 @@
 	
 	var React = __webpack_require__(1);
 	
-	var ShoppingBasketItem = function ShoppingBasketItem() {
+	var ShoppingBasketItem = function ShoppingBasketItem(props) {
 	  return React.createElement(
 	    'div',
 	    null,
-	    'ShoppingBasketItem'
+	    props.description,
+	    ', ',
+	    props.retailPrice,
+	    ', ',
+	    props.salePrice
 	  );
 	};
 	

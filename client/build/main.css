@@ -40,10 +40,15 @@ body{
   margin: 0;
 }
 
-.voucher-error-code{
-  /*display: none;*/
+.shopping-cart-clicked{
+  display: block;
+  height: 100%;
+  transition: height 500ms ease;
 }
 
-.basket-error-code{
-  /*display: none;*/
+.shopping-cart-not-clicked{
+  display: none;
+  height: 0%;
+  transition: height 500ms ease;
 }
+

@@ -4,13 +4,13 @@ var VoucherForm = require('./VoucherForm');
 
 var ShoppingBasketDetails = function(props){
   return(
-    <div className= 'row'>
+    <div className= {props.class}>
       ShoppingBasketDetails:
       <div className='row'>
-        <ShoppingBasketItemsList />
+        <ShoppingBasketItemsList shoppingCart={props.shoppingCart}/>
       </div>
       <div className='row'>
-        <VoucherForm handleVoucherClick={props.handleVoucherClick} errorMessage={props.voucherError}/>
+        <VoucherForm handleVoucherClick={props.handleVoucherClick} errorMessage={props.errorMessage}/>
       </div>
     </div>
   )

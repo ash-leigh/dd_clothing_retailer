@@ -1,9 +1,9 @@
 var React = require('react');
 
-var ShoppingBasketItem = function(){
+var ShoppingBasketItem = function(props){
   return(
     <div>
-      ShoppingBasketItem
+      {props.description}, {props.retailPrice}, {props.salePrice}
     </div>
   )
 }

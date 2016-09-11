@@ -2,7 +2,6 @@ var React = require('react');
 var ShopHeader = require('./ShopHeader');
 var ShoppingBasketHeader = require('./ShoppingBasketHeader');
 var ShoppingBasketExpandButton = require('./ShoppingBasketExpandButton');
-var ShoppingBasketDetails = require('./ShoppingBasketDetails');
 var StockItemsList = require('./StockItemsList');
 
 var ShoppingCart = require('../models/ShoppingCart');
@@ -98,8 +97,7 @@ var ShopBox = React.createClass({
         <div className='col-10'>
           <ShopHeader />
           <ShoppingBasketHeader total={this.state.total} items={this.state.numberOfItems}/>
-          <ShoppingBasketExpandButton />
-          <ShoppingBasketDetails handleVoucherClick={this.handleVoucherClick} voucherError={this.state.errorMessage}/>
+          <ShoppingBasketExpandButton handleVoucherClick={this.handleVoucherClick} errorMessage={this.state.errorMessage} shoppingCart = {this.state.shoppingCart}/>
           <StockItemsList addItemToBasket={this.addItemToBasket} removeItemFromBasket={this.removeItemFromBasket} stock={this.state.stockData} getNumberOfItemInBasket={this.getNumberOfItemInBasket}/>
         </div>
         <div className='col-1'></div>

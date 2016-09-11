@@ -82,6 +82,12 @@ body{
 
 .product-image img{
   width: 100%;
+  transition: width 500ms ease;
+}
+
+.product-image img:hover{
+  width: 105%;
+  transition: width 500ms ease;
 }
 
 .product-left{

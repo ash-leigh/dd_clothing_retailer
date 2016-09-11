@@ -13,6 +13,7 @@ var ShoppingBasketItemsList = function(props){
       category= {item.category}
       retailPrice={item.retailPrice} 
       salePrice={item.salePrice} 
+      url={item.url}
       removeItemFromBasket={props.removeItemFromBasket}/>
     )
   })

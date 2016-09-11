@@ -18,7 +18,7 @@ var ShoppingBasketExpandButton = React.createClass({
   render: function(){
     return(
       <div>
-      <div className= 'row' onClick={this.handleClick}></div>
+      <div className= 'row expand-button' onClick={this.handleClick}>show details</div>
         <ShoppingBasketDetails class={this.state.className} handleVoucherClick={this.props.handleVoucherClick} errorMessage={this.props.errorMessage} shoppingCart = {this.props.shoppingCart} removeItemFromBasket={this.props.removeItemFromBasket}/>
       </div>
     )

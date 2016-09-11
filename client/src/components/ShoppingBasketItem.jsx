@@ -18,8 +18,8 @@ var ShoppingBasketItem = React.createClass({
 
   render: function(){
     return(
-      <div className='row'>
-        {this.props.description} {this.props.retailPrice} {this.props.salePrice}
+      <div className='row shopping-basket-item'>
+        {this.props.description} £{this.props.retailPrice} {this.props.salePrice}
         <button onClick={this.handleClick}>X</button>
       </div>
     )

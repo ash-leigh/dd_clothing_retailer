@@ -14,6 +14,7 @@ var StockItemsList = function(props){
       retailPrice={item.retailPrice}
       salePrice={item.salePrice}
       stockQuantity={item.stockQuantity}
+      url={item.url}
       addItemToBasket={props.addItemToBasket}
       removeItemFromBasket={props.removeItemFromBasket}
       getNumberOfItemInBasket={props.getNumberOfItemInBasket}
@@ -22,7 +23,9 @@ var StockItemsList = function(props){
   })    
   return(
     <div className= 'row'>
+    <div className= 'stock-list'>
     {stockNodes}
+    </div>
     </div>
     )
 }

@@ -21608,7 +21608,7 @@
 	var ShopHeader = function ShopHeader() {
 	  return React.createElement(
 	    'div',
-	    { className: 'row' },
+	    { className: 'row header' },
 	    'Deloitte. retail'
 	  );
 	};
@@ -21682,7 +21682,11 @@
 	    return React.createElement(
 	      'div',
 	      null,
-	      React.createElement('div', { className: 'row', onClick: this.handleClick }),
+	      React.createElement(
+	        'div',
+	        { className: 'row expand-button', onClick: this.handleClick },
+	        'show details'
+	      ),
 	      React.createElement(ShoppingBasketDetails, { 'class': this.state.className, handleVoucherClick: this.props.handleVoucherClick, errorMessage: this.props.errorMessage, shoppingCart: this.props.shoppingCart, removeItemFromBasket: this.props.removeItemFromBasket })
 	    );
 	  }
@@ -21740,6 +21744,7 @@
 	      category: item.category,
 	      retailPrice: item.retailPrice,
 	      salePrice: item.salePrice,
+	      url: item.url,
 	      removeItemFromBasket: props.removeItemFromBasket });
 	  });
 	
@@ -21837,6 +21842,7 @@
 	      retailPrice: item.retailPrice,
 	      salePrice: item.salePrice,
 	      stockQuantity: item.stockQuantity,
+	      url: item.url,
 	      addItemToBasket: props.addItemToBasket,
 	      removeItemFromBasket: props.removeItemFromBasket,
 	      getNumberOfItemInBasket: props.getNumberOfItemInBasket
@@ -21845,7 +21851,11 @@
 	  return React.createElement(
 	    'div',
 	    { className: 'row' },
-	    stockNodes
+	    React.createElement(
+	      'div',
+	      { className: 'stock-list' },
+	      stockNodes
+	    )
 	  );
 	};
 	
@@ -21868,77 +21878,103 @@
 	    { className: 'col-4' },
 	    React.createElement(
 	      'div',
-	      { className: 'row' },
-	      props.description
-	    ),
-	    React.createElement(
-	      'div',
-	      { className: 'row' },
-	      'IMAGE'
-	    ),
-	    React.createElement(
-	      'div',
-	      { className: 'row' },
+	      { className: 'product-box' },
 	      React.createElement(
 	        'div',
-	        { className: 'col-6' },
-	        props.retailPrice
+	        { className: 'row' },
+	        props.description
 	      ),
 	      React.createElement(
 	        'div',
-	        { className: 'col-6' },
-	        props.salePrice
-	      )
-	    ),
-	    React.createElement(
-	      'div',
-	      { className: 'row' },
-	      React.createElement(
-	        'div',
-	        { className: 'col-4' },
-	        React.createElement(EditBasketButton, {
-	          display: '-',
-	          removeItemFromBasket: props.removeItemFromBasket,
-	          id: props.id,
-	          description: props.description,
-	          colour: props.colour,
-	          department: props.department,
-	          category: props.category,
-	          retailPrice: props.retailPrice,
-	          salePrice: props.salePrice,
-	          stockQuantity: props.stockQuantity
-	        })
+	        { className: 'product-image' },
+	        React.createElement('img', { src: props.url })
 	      ),
 	      React.createElement(
 	        'div',
-	        { className: 'col-4' },
-	        React.createElement(ItemsInBasketCount, {
-	          getNumberOfItemInBasket: props.getNumberOfItemInBasket,
-	          id: props.id,
-	          description: props.description,
-	          colour: props.colour,
-	          department: props.department,
-	          category: props.category,
-	          retailPrice: props.retailPrice,
-	          salePrice: props.salePrice,
-	          stockQuantity: props.stockQuantity
-	        })
+	        { className: 'row product-details' },
+	        React.createElement(
+	          'div',
+	          { className: 'col-6' },
+	          React.createElement(
+	            'div',
+	            { className: 'product-left' },
+	            '£ ',
+	            props.retailPrice
+	          )
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'col-6' },
+	          React.createElement(
+	            'div',
+	            { className: 'product-right' },
+	            '£ ',
+	            props.salePrice
+	          )
+	        )
 	      ),
 	      React.createElement(
 	        'div',
-	        { className: 'col-4' },
-	        React.createElement(EditBasketButton, {
-	          display: '+',
-	          addItemToBasket: props.addItemToBasket,
-	          id: props.id,
-	          description: props.description,
-	          colour: props.colour,
-	          department: props.department,
-	          category: props.category,
-	          retailPrice: props.retailPrice,
-	          salePrice: props.salePrice,
-	          stockQuantity: props.stockQuantity
-	        })
+	        { className: 'row product-details' },
+	        React.createElement(
+	          'div',
+	          { className: 'col-4' },
+	          React.createElement(
+	            'div',
+	            { className: 'product-right' },
+	            React.createElement(EditBasketButton, {
+	              display: '-',
+	              removeItemFromBasket: props.removeItemFromBasket,
+	              id: props.id,
+	              description: props.description,
+	              colour: props.colour,
+	              department: props.department,
+	              category: props.category,
+	              retailPrice: props.retailPrice,
+	              salePrice: props.salePrice,
+	              stockQuantity: props.stockQuantity
+	            })
+	          )
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'col-4' },
+	          React.createElement(
+	            'div',
+	            { className: 'product-center' },
+	            React.createElement(ItemsInBasketCount, {
+	              getNumberOfItemInBasket: props.getNumberOfItemInBasket,
+	              id: props.id,
+	              description: props.description,
+	              colour: props.colour,
+	              department: props.department,
+	              category: props.category,
+	              retailPrice: props.retailPrice,
+	              salePrice: props.salePrice,
+	              stockQuantity: props.stockQuantity
+	            })
+	          )
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'col-4' },
+	          React.createElement(
+	            'div',
+	            { className: 'product-left' },
+	            React.createElement(EditBasketButton, {
+	              display: '+',
+	              addItemToBasket: props.addItemToBasket,
+	              id: props.id,
+	              description: props.description,
+	              colour: props.colour,
+	              department: props.department,
+	              category: props.category,
+	              retailPrice: props.retailPrice,
+	              salePrice: props.salePrice,
+	              stockQuantity: props.stockQuantity
+	            })
+	          )
+	        )
 	      )
 	    )
 	  );
@@ -38998,9 +39034,9 @@
 	  render: function render() {
 	    return React.createElement(
 	      'div',
-	      { className: 'row' },
+	      { className: 'row shopping-basket-item' },
 	      this.props.description,
-	      ' ',
+	      ' £',
 	      this.props.retailPrice,
 	      ' ',
 	      this.props.salePrice,

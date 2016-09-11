@@ -21535,10 +21535,10 @@
 	  handleVoucherClick: function handleVoucherClick(code) {
 	    var shoppingCart = this.populateShoppingCart();
 	    var voucherCheck = shoppingCart.checkVoucherCode(code, this.state.voucherData);
-	    var itemCheck = shoppingCart.checkBasketEligibleForVoucher(voucherCheck);
 	
 	    if (voucherCheck) {
 	      this.setState({ errorMessage: '' });
+	      var itemCheck = shoppingCart.checkBasketEligibleForVoucher(voucherCheck);
 	      if (itemCheck) {
 	        shoppingCart.applyVoucher(code, this.state.voucherData);
 	        this.setState({ errorMessage: '', shoppingCart: shoppingCart.items, total: shoppingCart.total, numberOfItems: shoppingCart.items.length });

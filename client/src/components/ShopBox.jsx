@@ -70,25 +70,21 @@ var ShopBox = React.createClass({
   },
 
   handleVoucherClick: function(code){
-    var shoppingCart = new ShoppingCart();
-    for(var item of this.state.shoppingCart){
-      shoppingCart.addItem(new StockItem(item));
-    }
-
+    var shoppingCart = this.populateShoppingCart();
     var voucherCheck = shoppingCart.checkVoucherCode(code, this.state.voucherData)
+    var itemCheck = shoppingCart.checkBasketEligibleForVoucher(voucherCheck)
 
     if(voucherCheck){
-      if(shoppingCart.checkBasketEligibleForVoucher(voucherCheck)){
+      this.setState({errorMessage: ''})
+      if(itemCheck){
         shoppingCart.applyVoucher(code, this.state.voucherData)
+        this.setState({errorMessage: '', shoppingCart: shoppingCart.items, total: shoppingCart.total, numberOfItems: shoppingCart.items.length})
       }else{
         this.setState({errorMessage: shoppingCart.basketErrorMessage()})
       }
     }else{
       this.setState({errorMessage: shoppingCart.voucherErrorMessage()})
     }
-
-   this.setState({shoppingCart: shoppingCart.items, total: shoppingCart.total, numberOfItems: shoppingCart.items.length});
-
   },
 
   render: function(){

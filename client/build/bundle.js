@@ -21527,6 +21527,24 @@
 	  },
 	
 	  handleVoucherClick: function handleVoucherClick(code) {
+	    var shoppingCart = this.populateShoppingCart();
+	    var voucherCheck = shoppingCart.checkVoucherCode(code, this.state.voucherData);
+	    var itemCheck = shoppingCart.checkBasketEligibleForVoucher(voucherCheck);
+	
+	    if (voucherCheck) {
+	      this.setState({ errorMessage: '' });
+	      if (itemCheck) {
+	        shoppingCart.applyVoucher(code, this.state.voucherData);
+	        this.setState({ errorMessage: '', shoppingCart: shoppingCart.items, total: shoppingCart.total, numberOfItems: shoppingCart.items.length });
+	      } else {
+	        this.setState({ errorMessage: shoppingCart.basketErrorMessage() });
+	      }
+	    } else {
+	      this.setState({ errorMessage: shoppingCart.voucherErrorMessage() });
+	    }
+	  },
+	
+	  render: function render() {
 	    var shoppingCart = new ShoppingCart();
 	    var _iteratorNormalCompletion2 = true;
 	    var _didIteratorError2 = false;
@@ -21536,7 +21554,7 @@
 	      for (var _iterator2 = this.state.shoppingCart[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
 	        var item = _step2.value;
 	
-	        shoppingCart.addItem(new StockItem(item));
+	        shoppingCart.addItem(item);
 	      }
 	    } catch (err) {
 	      _didIteratorError2 = true;
@@ -21549,48 +21567,6 @@
 	      } finally {
 	        if (_didIteratorError2) {
 	          throw _iteratorError2;
-	        }
-	      }
-	    }
-	
-	    var voucherCheck = shoppingCart.checkVoucherCode(code, this.state.voucherData);
-	
-	    if (voucherCheck) {
-	      if (shoppingCart.checkBasketEligibleForVoucher(voucherCheck)) {
-	        shoppingCart.applyVoucher(code, this.state.voucherData);
-	      } else {
-	        this.setState({ errorMessage: shoppingCart.basketErrorMessage() });
-	      }
-	    } else {
-	      this.setState({ errorMessage: shoppingCart.voucherErrorMessage() });
-	    }
-	
-	    this.setState({ shoppingCart: shoppingCart.items, total: shoppingCart.total, numberOfItems: shoppingCart.items.length });
-	  },
-	
-	  render: function render() {
-	    var shoppingCart = new ShoppingCart();
-	    var _iteratorNormalCompletion3 = true;
-	    var _didIteratorError3 = false;
-	    var _iteratorError3 = undefined;
-	
-	    try {
-	      for (var _iterator3 = this.state.shoppingCart[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-	        var item = _step3.value;
-	
-	        shoppingCart.addItem(item);
-	      }
-	    } catch (err) {
-	      _didIteratorError3 = true;
-	      _iteratorError3 = err;
-	    } finally {
-	      try {
-	        if (!_iteratorNormalCompletion3 && _iterator3.return) {
-	          _iterator3.return();
-	        }
-	      } finally {
-	        if (_didIteratorError3) {
-	          throw _iteratorError3;
 	        }
 	      }
 	    }
@@ -22026,7 +22002,6 @@
 	  },
 	
 	  removeItem: function removeItem(removedItem) {
-	
 	    for (var i = 0; i < this.items.length; i++) {
 	      if (this.items[i].id === removedItem.id) {
 	        this.items.splice(i, 1);
@@ -22066,7 +22041,7 @@
 	  },
 	
 	  basketErrorMessage: function basketErrorMessage() {
-	    return 'Sorry, the items in your besket are not eligible for this voucher';
+	    return 'Sorry, the items in your basket are not eligible for this voucher';
 	  },
 	
 	  applyVoucher: function applyVoucher(code, vouchers) {

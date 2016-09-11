@@ -21,7 +21,6 @@ ShoppingCart.prototype = {
   },
 
   removeItem: function(removedItem){
-
     for(var i = 0; i < this.items.length; i++){
       if(this.items[i].id === removedItem.id){
         this.items.splice(i, 1);
@@ -63,7 +62,7 @@ ShoppingCart.prototype = {
   },
 
   basketErrorMessage: function(){
-    return 'Sorry, the items in your besket are not eligible for this voucher';
+    return 'Sorry, the items in your basket are not eligible for this voucher';
   },
 
   applyVoucher: function(code, vouchers){

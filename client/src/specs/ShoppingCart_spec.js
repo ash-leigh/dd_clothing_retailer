@@ -71,7 +71,8 @@ describe('Shopping cart', function(){
   })
 
   it('can check for multiply eligibility criteria on a basket', function(){
-    assert.equal(true, false)
+    shoppingCart.addItem(stockItem);
+    assert.equal(shoppingCart.checkBasketEligibleForVoucher(fifteenOffVoucher), true)
   })
 
   it('can check whether items are not eligible for voucher', function(){
@@ -92,24 +93,14 @@ describe('Shopping cart', function(){
 
   it('can apply voucher', function(){
     shoppingCart.addItem(stockItem);
-    shoppingCart.applyVoucher(fifteenOffVoucher);
+    shoppingCart.applyVoucherToTotal(fifteenOffVoucher);
     assert.equal(shoppingCart.total, 84.00);
-  })
-
-  it('can return true if voucher was applied', function(){
-    shoppingCart.addItem(stockItem);
-    assert.equal( shoppingCart.applyVoucher(fifteenOffVoucher), true);
   })
 
   it('can refuse to apply voucher', function(){
     shoppingCart.addItem(saleItem);
     shoppingCart.applyVoucher(fifteenOffVoucher);
     assert.equal(shoppingCart.total, 39.99);
-  })
-
-  it('can return false if voucher was not applied', function(){
-    shoppingCart.addItem(saleItem);
-    assert.equal( shoppingCart.applyVoucher(fifteenOffVoucher), false);
   })
 
 

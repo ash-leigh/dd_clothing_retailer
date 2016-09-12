@@ -54,7 +54,7 @@ describe('Stock', function(){
     stock.sellItem(saleItem)
     stock.sellItem(saleItem)
     stock.returnItem(saleItem)
-    assert.equal(stock.itemStockCount(saleItem), 2)
+    assert.equal(stock.itemStockCount(saleItem), 1)
   })
 
 
